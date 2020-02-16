@@ -15,9 +15,12 @@ const styles = {
     color: "white",
     fontFamily:'"Luckiest Guy", cursive',
     textTransform:'uppercase',
+    height:'4rem'
   },
   title:{
       padding:'.5rem',
       fontWeight:'700',
+      marginLeft:'1rem',
+      letterSpacing:'.3rem'
   }
 };

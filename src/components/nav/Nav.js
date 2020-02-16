@@ -9,18 +9,23 @@ export const Nav = props => {
       </div>
       <div style={styles.list}>
         <NavLink to="/Home" style={styles.listItem}>
+          <img style={styles.icon} src={require('../../Icons/home.png')} alt="home icon"></img>
           Home
         </NavLink>
         <NavLink to="/Builder" style={styles.listItem}>
+        <img style={styles.icon} src={require('../../Icons/pokeballs.png')} alt="home icon"></img>
           Builder
         </NavLink>
         <NavLink to="/Teams" style={styles.listItem}>
+        <img style={styles.icon} src={require('../../Icons/pikachu.png')} alt="home icon"></img>
           Teams
         </NavLink>
         <NavLink to="/Resources" style={styles.listItem}>
+        <img style={styles.icon} src={require('../../Icons/dex.png')} alt="home icon"></img>
           Resources
         </NavLink>
         <NavLink to="/About" style={styles.listItem}>
+        <img style={styles.icon} src={require('../../Icons/trainer.png')} alt="home icon"></img>
           About
         </NavLink>
       </div>
@@ -35,32 +40,40 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     textAlign: "left",
-    width: "10%",
+    width: "12%",
     overflow:'hidden'
   },
   listItem: {
-    display: "inline-block",
+    display: "flex",
     textAlign: "left",
     color: "white",
     margin: "1rem",
     fontSize: "1.5em",
-    fontWeight: "600",
-    textDecoration: "none"
+    fontWeight: "400",
+    textDecoration: "none",
   },
   list: {
     listStyle: "none",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    padding:'1rem'
   },
   logoContainer: {
-    backgroundColor: "#0F4D8C",
+    backgroundColor: "#1AEDAD",
     padding: "1rem",
-    textAlign: "center",
     color: "white",
     width:'100%',
+    height:'2rem',
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
   },
   logo:{
     width:'50px',
-    margin:'auto'
+    height:'50px'
+  },
+  icon:{
+    width:'30px',
+    marginRight:'.8rem'
   }
 };
