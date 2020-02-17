@@ -12,8 +12,36 @@ class Builder extends Component {
     abilities: [{ ability: { name: "???" } }],
     moves: [{ move: { name: "???" } }],
     item: "",
-    showPokeSearch: "closed"
+    showPokeSearch: "close",
+    showcase: []
   };
+
+  componentDidMount() {
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit=10")
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.log("error");
+        }
+      })
+      .catch(console.log("err"))
+      .then(json => {
+        let pokemon = json.results;
+        pokemon.forEach(mon => {
+          fetch(mon.url)
+            .then(res => res.json())
+            .then(json => {
+              this.setState({
+                showcase: [
+                  ...this.state.showcase,
+                  { name: json.name, url: json.sprites.front_default }
+                ]
+              });
+            });
+        });
+      });
+  }
 
   onSubmitName = e => {
     e.preventDefault();
@@ -86,9 +114,8 @@ class Builder extends Component {
     console.log(e.target.dataset.order);
   };
 
-  onSubmitItem=e=>{
-   
-  }
+  onSubmitItem = e => {};
+
 
   render() {
     return (
@@ -104,7 +131,19 @@ class Builder extends Component {
             style={styles.searchModal}
           >
             <form style={styles.formModal}>
-              <input style={styles.searchBar} placeholder="serach"></input>
+              <input
+                onChange={this.onChange}
+                style={styles.searchBar}
+                placeholder="serach"
+              ></input>
+              <div style={styles.preview}>
+              {this.state.showcase !== []
+                ? this.state.showcase.map((mon, index) => {
+                   return(<p>{mon.name}<img style={styles.previewMon} src={mon.url} alt={mon.name}/></p>)
+                  })
+                : null}
+
+              </div>
             </form>
           </Modal>
         </div>
@@ -112,7 +151,10 @@ class Builder extends Component {
           <form onSubmit={this.onSubmitName}>
             <label htmlFor="name">Name</label>
             <input
-              onChange={this.onChange}
+              onClick={async function() {
+                // this.fetchList();
+                this.setState({ showPokeSearch: "open" });
+              }.bind(this)}
               name="name"
               type="text"
               // onClick={this.openModal}
@@ -185,8 +227,6 @@ class Builder extends Component {
                   })
                 : null}
             </select>
-
-            <button type="submit">Submit</button>
           </form>
         </div>
 
@@ -195,6 +235,7 @@ class Builder extends Component {
           name={this.state.found}
           img={this.state.img}
           types={this.state.types}
+          submit={this.onSubmitPokemon}
         />
       </div>
     );
@@ -221,18 +262,26 @@ const styles = {
     borderRadius: ".5rem",
     width: "500px",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    flexDirection:'column'
   },
   searchModal: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center"
+    alignContent: "center",
   },
   searchBar: {
     width: "95%",
     borderRadius: "10px",
     border: "none",
     padding: ".5rem"
+  },
+  preview:{
+    display:'flex',
+    flexDirection:'column'
+  },
+  previewMon:{
+    width:'70px'
   }
 };
