@@ -13,11 +13,13 @@ class Builder extends Component {
     moves: [{ move: { name: "???" } }],
     item: "",
     showPokeSearch: "close",
-    showcase: []
+    showcase: [],
+    next: "",
+    previous: ""
   };
 
   componentDidMount() {
-    fetch("https://pokeapi.co/api/v2/pokemon/?limit=10")
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit=9")
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -28,6 +30,7 @@ class Builder extends Component {
       .catch(console.log("err"))
       .then(json => {
         let pokemon = json.results;
+        this.setState({ next: json.next });
         pokemon.forEach(mon => {
           fetch(mon.url)
             .then(res => res.json())
@@ -114,38 +117,87 @@ class Builder extends Component {
     console.log(e.target.dataset.order);
   };
 
+  monSelected = e => {
+    console.log(e.target.parentElement.dataset.pokemon);
+    let mon = JSON.parse(e.target.parentElement.dataset.pokemon);
+    console.log(mon.name);
+  };
+
   onSubmitItem = e => {};
 
+  next = e => {
+    e.preventDefault();
+    this.setState({
+      showcase: []
+    });
+    fetch(this.state.next)
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          console.log("error");
+        }
+      })
+      .catch(console.log("err"))
+      .then(json => {
+        let pokemon = json.results;
+        this.setState({ next: json.next });
+        pokemon.forEach(mon => {
+          fetch(mon.url)
+            .then(res => res.json())
+            .then(json => {
+              this.setState({
+                showcase: [
+                  ...this.state.showcase,
+                  { name: json.name, url: json.sprites.front_default }
+                ]
+              });
+            });
+        });
+      });
+  };
 
   render() {
     return (
       <div style={styles.container}>
-        <div className={this.state.showPokeSearch}>
-          <Modal
-            disablePortal
-            disableEnforceFocus
-            disableAutoFocus
-            open
-            aria-labelledby="server-modal-title"
-            aria-describedby="server-modal-description"
-            style={styles.searchModal}
-          >
-            <form style={styles.formModal}>
-              <input
-                onChange={this.onChange}
-                style={styles.searchBar}
-                placeholder="serach"
-              ></input>
-              <div style={styles.preview}>
-              {this.state.showcase !== []
-                ? this.state.showcase.map((mon, index) => {
-                   return(<p>{mon.name}<img style={styles.previewMon} src={mon.url} alt={mon.name}/></p>)
-                  })
-                : null}
-
-              </div>
-            </form>
-          </Modal>
+        <div style={styles.Modal} className={this.state.showPokeSearch}>
+          <div style={styles.modalContent}>
+          <form style={styles.formModal}>
+            <input
+              onChange={this.onChange}
+              style={styles.searchBar}
+              placeholder="serach"
+            ></input>
+            <div className="closed">Not Found</div>
+          </form>
+          <div style={styles.preview}>
+            {this.state.showcase !== []
+              ? this.state.showcase.map((mon, index) => {
+                  return (
+                    <div
+                      key={index}
+                      data-pokemon={JSON.stringify(mon)}
+                      style={styles.pokeWrap}
+                      onClick={this.monSelected}
+                    >
+                      <p key={index}>
+                        {mon.name}
+                        <img
+                          style={styles.previewImg}
+                          src={mon.url}
+                          alt={mon.name}
+                        />
+                      </p>
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+          <div style={styles.buttons}>
+            <button onClick={this.previous}>></button>
+            <input onClick={this.next} type="button" value="<"></input>
+          </div>
+          </div>
         </div>
         <div style={styles.form}>
           <form onSubmit={this.onSubmitName}>
@@ -247,7 +299,8 @@ export default Builder;
 const styles = {
   container: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    position: "relative"
   },
   panel: {
     marginRight: "0px"
@@ -257,19 +310,23 @@ const styles = {
     flexDirection: "column"
   },
   formModal: {
-    backgroundColor: "darkgray",
-    padding: "1rem",
-    borderRadius: ".5rem",
-    width: "500px",
-    display: "flex",
-    justifyContent: "center",
-    flexDirection:'column'
+    maxWidth: "50%"
   },
-  searchModal: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
+  Modal: {
+    width: "100%",
+    height: "100vh",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    position: "absolute",
+    zIndex: "1",
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center'
+  },modalContent:{
+    width:'50%',
+    display:'flex',
+    flexDirection:'column',
+    justifyContent:'center',
+    alignItems:'center',
   },
   searchBar: {
     width: "95%",
@@ -277,11 +334,18 @@ const styles = {
     border: "none",
     padding: ".5rem"
   },
-  preview:{
-    display:'flex',
-    flexDirection:'column'
+  preview: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    backgroundColor: "gray"
   },
-  previewMon:{
-    width:'70px'
+  previewPic: {
+    width: "60px"
+  },
+  pokeWrap: {
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    margin: "1rem"
   }
 };

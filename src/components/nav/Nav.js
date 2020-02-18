@@ -41,7 +41,8 @@ const styles = {
     alignItems: "center",
     textAlign: "left",
     width: "12%",
-    overflow:'hidden'
+    overflow:'hidden',
+    height:'100vh'
   },
   listItem: {
     display: "flex",
