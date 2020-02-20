@@ -1,18 +1,18 @@
-import React from "react";
-import "./App.css";
+import React, { useState } from "react";
+import "./App.scss";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./components/Routes";
-import { Header } from "./components/header/Header";
-import { Nav } from "./components/nav/Nav";
-
+import Header from "./components/header/Header";
+import Nav from "./components/nav/Nav";
 function App() {
+  const [open, setOpen] = useState(false);
+
   return (
     <Router>
-      <div style={styles.container}>
-        <Nav />
-        <div style={styles.content}>
-          <Header />
-          <Routes />
+      {console.log(window.screen.width)}
+      <div className="html">
+        <div className="html-content">
+          <Header content={<Routes />}/>
         </div>
       </div>
     </Router>
@@ -20,15 +20,3 @@ function App() {
 }
 
 export default App;
-
-const styles = {
-  container: {
-    height: "100vh",
-    display:'flex',
-  },
-  content:{
-    // display:'flex',
-    // flexDirection:'column',
-    width:'100%',
-  }
-};
