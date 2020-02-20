@@ -15,6 +15,7 @@ const styles = {
     zIndex: "1",
     display: "flex",
     alignItems: "center",
+    alignContent: 'center',
     justifyContent: "center",
     flexDirection: "column"
   }

@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import Panel from "../panel/Panel";
 // import { Paper, Input } from "@material-ui/core";
 //make pokemon images same size
-//seperate into components
-//make forms external
-//300 line is too much (maybe 150)
 import "./Builder.css";
 import { SearchBar } from "../searchBar/SearchBar";
 import { GalleryButtons } from "../galleryButtons/GalleryButtons";
 import { SingleForm } from "../singleForm/SingleForm";
 import Modal from "../modal/Modal";
 import PokePreview from "../pokePreview/PokePreview";
+
 class Builder extends Component {
   state = {
     found: "No Results",
@@ -30,19 +28,24 @@ class Builder extends Component {
     nextItem: "",
     previousItem: "",
     selectedPokemon: "",
+    selectedAbility: '',
+    selectedMoves: [],
     team: []
   };
 
   getInfo(url) {
-    return fetch(url)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return "error";
-        }
-      })
-      .catch(console.log("API error"));
+    try {
+      return fetch(url)
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return "error";
+          }
+        })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async componentDidMount() {
@@ -86,8 +89,98 @@ class Builder extends Component {
     );
   }
 
+
+
+  selectedMove = e => {
+    e.preventDefault();
+    let id = e.target.dataset.order;
+    let move = e.target.value;
+    let valid = false;
+    console.log(id, move)
+    switch (id) {
+      case '1':
+        console.log('set')
+        let items = [...this.state.selectedMoves];
+        let item = { ...items[0] };
+        item.name = move;
+        items[0] = item;
+        this.setState({ selectedMoves: items });
+        break;
+      case '2':
+        this.state.selectedMoves.forEach(mov => {
+          console.log(mov)
+          if (mov.name === move) {
+            console.log('err')
+            valid = false;
+          } else {
+            valid = true;
+          }
+        })
+        if (valid === true) {
+          console.log('true')
+          let items = [...this.state.selectedMoves];
+          let item = { ...items[1] };
+          item.name = move;
+          items[1] = item;
+          this.setState({ selectedMoves: items });
+        }
+
+        break;
+      case '3':
+        this.state.selectedMoves.forEach(mov => {
+          console.log(mov)
+          if (mov.name === move) {
+            console.log('err')
+            valid = false;
+          } else {
+            valid = true;
+          }
+        })
+        if (valid === true) {
+          console.log('true')
+          let items = [...this.state.selectedMoves];
+          let item = { ...items[2] };
+          item.name = move;
+          items[2] = item;
+          this.setState({ selectedMoves: items });
+        }
+        break;
+      case '4':
+        this.state.selectedMoves.forEach(mov => {
+          console.log(mov)
+          if (mov.name === move) {
+            console.log('err')
+            valid = false;
+          } else {
+            valid = true;
+          }
+        })
+        if (valid === true) {
+          console.log('true')
+          let items = [...this.state.selectedMoves];
+          let item = { ...items[3] };
+          item.name = move;
+          items[3] = item;
+          this.setState({ selectedMoves: items });
+        }
+        break;
+      default:
+        break
+    }
+  }
+
   onSubmitPokemon = e => {
     e.preventDefault();
+    let pokemon = this.state.found;
+    let abil = this.state.selectedAbility;
+    let item = this.state.foundItem;
+    let moves = this.state.selectedMoves;
+    let newPokemon = { name: pokemon, abil: abil, item: item, moves: moves }
+    this.setState({
+      selectedPokemon: [...this.state.selectedPokemon, newPokemon]
+    })
+    console.log(this.state.selectedPokemon)
+
   };
 
   onSubmitItem = e => {
@@ -103,7 +196,7 @@ class Builder extends Component {
         console.log("error test true");
         this.setState({ foundItem: "No Item Found" });
       } else {
-        this.setState({ foundItem: json.name,showItemSearch:'closed' });
+        this.setState({ foundItem: json.name, showItemSearch: 'closed' });
       }
       console.log(this.state.foundItem)
     });
@@ -121,7 +214,7 @@ class Builder extends Component {
             "https://i.ya-webdesign.com/images/pokemon-question-mark-png.png",
           types: [{ type: { name: "???" } }],
           abilities: [{ ability: { name: "???" } }],
-          moves: [{ move: { name: "???" } }]
+          moves: [{ move: { name: "???" } }],
         });
       } else {
         this.setState({
@@ -130,7 +223,8 @@ class Builder extends Component {
           types: json.types,
           abilities: json.abilities,
           moves: json.moves,
-          showPokeSearch: "closed"
+          showPokeSearch: "closed",
+          selectedAbility: json.abilities[0]
         });
       }
     });
@@ -168,24 +262,27 @@ class Builder extends Component {
         img: data.sprites.front_default,
         types: data.types,
         abilities: data.abilities,
-        moves: data.moves,
+        selectedAbility: data.abilities[0],
         showPokeSearch: "closed"
       });
+      data.moves.forEach((mov) => {
+        this.setState({
+          moves: [...this.state.moves, mov]
+        })
+      })
+      console.log(this.state.moves[0].move)
     });
   };
-  
+
   itemSelected = e => {
-    let item = JSON.parse(e.target.dataset.item);
-    this.getInfo(`https://pokeapi.co/api/v2/pokemon/${mon.name}`).then(data => {
+    let item = JSON.parse(e.target.dataset.pokemon);
+    this.getInfo(`https://pokeapi.co/api/v2/item/${item.name}`).then(data => {
       this.setState({
-        found: data.name,
-        img: data.sprites.front_default,
-        types: data.types,
-        abilities: data.abilities,
-        moves: data.moves,
-        showPokeSearch: "closed"
+        foundItem: data.name,
+        showItemSearch: 'closed'
       });
     });
+
   };
 
   next = e => {
@@ -195,6 +292,7 @@ class Builder extends Component {
     });
     this.getInfo(this.state.next).then(data => {
       let pokemon = data.results;
+      console.log(data.previous)
       this.setState({ next: data.next, previous: data.previous });
       pokemon.forEach(mon => {
         this.getInfo(mon.url).then(json => {
@@ -208,6 +306,27 @@ class Builder extends Component {
       });
     });
   };
+
+  previous = e => {
+    e.preventDefault();
+    this.setState({
+      showcase: []
+    });
+    this.getInfo(this.state.previous).then(data => {
+      let pokemon = data.results;
+      this.setState({ next: data.next, previous: data.previous })
+      pokemon.forEach(mon => {
+        this.getInfo(mon.url).then(json => {
+          this.setState({
+            showcase: [
+              ...this.state.showcase,
+              { name: json.name, url: json.sprites.front_default }
+            ]
+          })
+        })
+      })
+    })
+  }
 
   nextItem = e => {
     e.preventDefault();
@@ -259,8 +378,8 @@ class Builder extends Component {
             return (
               <PokePreview
                 key={index}
-                item={item}
-                selected={this.itemSelected}
+                item={JSON.stringify(item)}
+                selected={item.url ? this.monSelected : this.itemSelected}
                 name={item.name}
                 url={item.url ? item.url : item.img}
               />
@@ -271,12 +390,19 @@ class Builder extends Component {
     }
   }
 
+  selectedAbility = e => {
+    e.preventDefault();
+    this.setState({
+      selectedAbility: e.target.value
+    })
+  }
+
   render() {
     return (
       <div style={styles.container}>
         <Modal
           content={
-            <div>
+            <div style={styles.modalContent}>
               <SearchBar
                 submit={this.onSubmitItem}
                 name="item"
@@ -294,46 +420,19 @@ class Builder extends Component {
           class={this.state.showItemSearch}
         />
 
-
-        <div style={styles.modal} className={this.state.showPokeSearch}>
-          <div style={styles.modalContent}>
-            <SearchBar
-              submit={this.onSubmitName}
-              name="name"
-              onChange={this.onChange}
-              placeholder="Pokemon"
-              nFound="closed"
-            />
-            <div style={styles.preview}>
-              {this.state.showcase !== []
-                ? this.state.showcase.map((mon, index) => {
-                    return (
-                      <div
-                        key={index}
-                        style={styles.pokeWrap}
-                        onClick={this.monSelected}
-                      >
-                        <p key={index} data-pokemon={JSON.stringify(mon)}>
-                          {mon.name}
-                          <img
-                            data-pokemon={JSON.stringify(mon)}
-                            style={styles.previewImg}
-                            src={mon.url}
-                            alt={mon.name}
-                          />
-                        </p>
-                      </div>
-                    );
-                  })
-                : null}
+        <Modal
+          content={
+            <div style={styles.modalContent}>
+              <SearchBar submit={this.onSubmitName} name="name" onChange={this.onChange} placeholder='Pokemon' errorField='closed' />
+              {this.map(this.state.showcase)}
+              <GalleryButtons next={this.next} previous={this.previous} />
             </div>
-            <GalleryButtons next={this.next} previous={this.previous} />
-          </div>
-        </div>
+          }
+          class={this.state.showPokeSearch} />
 
         <div style={styles.form}>
           <SingleForm
-            modalOpen={function() {
+            modalOpen={function () {
               this.setState({ showPokeSearch: "open" });
             }.bind(this)}
             submit={this.onSubmitName}
@@ -343,21 +442,21 @@ class Builder extends Component {
 
           <form>
             <label htmlFor="ability">Ability</label>
-            <select id="ability">
+            <select onChange={this.selectedAbility} id="ability">
               {this.state.abilities !== []
                 ? this.state.abilities.map((ability, index) => {
-                    return (
-                      <option key={index} value={ability.ability.name}>
-                        {ability.ability.name}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ability.ability.name}>
+                      {ability.ability.name}
+                    </option>
+                  );
+                })
                 : null}
             </select>
           </form>
 
           <SingleForm
-            modalOpen={function() {
+            modalOpen={function () {
               this.setState({ showItemSearch: "open" });
             }.bind(this)}
             label="Item"
@@ -368,51 +467,47 @@ class Builder extends Component {
 
           <form>
             <label htmlFor="moves">Moves</label>
-            <select data-order="1" className="moves">
+            <select onChange={this.selectedMove} data-order="1" className="moves">
+              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
+                return (
+                  <option key={index} value={move.move.name}>
+                    {move.move.name}
+                  </option>
+                )
+              }) : null}
+            </select>
+
+            <select onChange={this.selectedMove} data-order="2" className="moves">
+              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
+                return (
+                  <option key={index} value={move.move.name}>
+                    {move.move.name}
+                  </option>
+                )
+              }) : null}
+            </select>
+
+            <select onChange={this.selectedMove} data-order="3" className="moves">
               {this.state.moves !== []
                 ? this.state.moves.map((move, index) => {
-                    return (
-                      <option key={index} value={move.move.name}>
-                        {move.move.name}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={move.move.name}>
+                      {move.move.name}
+                    </option>
+                  );
+                })
                 : null}
             </select>
 
-            <select data-order="2" className="moves">
+            <select onChange={this.selectedMove} data-order="4" className="moves">
               {this.state.moves !== []
                 ? this.state.moves.map((move, index) => {
-                    return (
-                      <option key={index} value={move.move.name}>
-                        {move.move.name}
-                      </option>
-                    );
-                  })
-                : null}
-            </select>
-
-            <select data-order="3" className="moves">
-              {this.state.moves !== []
-                ? this.state.moves.map((move, index) => {
-                    return (
-                      <option key={index} value={move.move.name}>
-                        {move.move.name}
-                      </option>
-                    );
-                  })
-                : null}
-            </select>
-
-            <select data-order="4" className="moves">
-              {this.state.moves !== []
-                ? this.state.moves.map((move, index) => {
-                    return (
-                      <option key={index} value={move.move.name}>
-                        {move.move.name}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={move.move.name}>
+                      {move.move.name}
+                    </option>
+                  );
+                })
                 : null}
             </select>
           </form>
@@ -453,28 +548,11 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
-  },
-  searchBar: {
-    width: "95%",
-    borderRadius: "10px",
-    border: "none",
-    padding: ".5rem"
+    alignItems: "center",
   },
   preview: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
     backgroundColor: "gray"
   },
-  modal: {
-    width: "100%",
-    height: "100vh",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    position: "absolute",
-    zIndex: "1",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column"
-  }
 };

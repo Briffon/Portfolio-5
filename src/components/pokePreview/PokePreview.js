@@ -28,7 +28,8 @@ const styles = {
     justifyContent: "center",
     textAlign: "center",
     margin: "1rem",
-    flexDirection: "column"
+    flexDirection: "column",
+    alignItems: 'center'
   },
   previewImg: {
     width: "50px"
