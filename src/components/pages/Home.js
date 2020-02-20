@@ -21,12 +21,20 @@ function Home() {
 
       <div className="info">
         <h3>What is Pokemon Advisor?</h3>
-        <p>kjdhfjhsdkjfhsdkjfnkjsdfnkjsdnvckjdsnfkjnsdfkjndkjsvncjsdnf</p>
+        <p>
+          Pokemon Advisor is an application to help you create highly compettive
+          teams! This application is built for beginniers and verterans to the
+          scene.
+        </p>
       </div>
 
       <div className="info">
-        <h3>What is Pokemon Advisor?</h3>
-        <p>kjdhfjhsdkjfhsdkjfnkjsdfnkjsdnvckjdsnfkjnsdfkjndkjsvncjsdnf</p>
+        <h3>How does is work?</h3>
+        <p>
+          Pokemon Advisor is an application to help you create highly compettive
+          teams! This application is built for beginniers and verterans to the
+          scene.
+        </p>
       </div>
     </div>
   );
