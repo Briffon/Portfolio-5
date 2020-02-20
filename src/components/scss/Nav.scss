@@ -1,0 +1,60 @@
+.nav-container {
+  width: 60%;
+  height: 100vh;
+  background-color: $secondary;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .nav-container {
+    display: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .hamburger-container {
+    display: flex !important;
+  }
+}
+
+.logo-container {
+  width: 100%;
+  height: 20%;
+  background-color: $accent;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.logo {
+  width: 90px;
+  margin: auto;
+  padding: 0.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+  padding: 0.5rem;
+  margin-left: 1.4rem;
+}
+
+.list-item {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5em;
+  font-weight: 640;
+  display: flex;
+  margin-bottom: 2rem;
+  font-family: $lucky;
+}
+
+.icon {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.icon:hover {
+  box-shadow: 10px 10px 20px 20px white;
+}
