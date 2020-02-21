@@ -7,10 +7,9 @@ function App() {
 
   return (
     <Router>
-      {console.log(window.screen.width)}
       <div className="html">
         <div className="html-content">
-          <Header content={<Routes />}/>
+          <Header content={<Routes />} />
         </div>
       </div>
     </Router>

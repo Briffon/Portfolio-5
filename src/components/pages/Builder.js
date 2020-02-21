@@ -34,6 +34,7 @@ class Builder extends Component {
   };
 
   getInfo(url) {
+    //https://pokeapi.co/api/v2/pokemon/?limit=1000
     try {
       return fetch(url)
         .then(res => {
@@ -198,6 +199,7 @@ class Builder extends Component {
       } else {
         this.setState({ foundItem: json.name, showItemSearch: 'closed' });
       }
+      //don't set state in async
       console.log(this.state.foundItem)
     });
   };
@@ -464,7 +466,7 @@ class Builder extends Component {
             name="item"
             val={this.state.foundItem}
           />
-
+          {/*make an array for the select and pass in info through props */}
           <form>
             <label htmlFor="moves">Moves</label>
             <select onChange={this.selectedMove} data-order="1" className="moves">
@@ -475,6 +477,7 @@ class Builder extends Component {
                   </option>
                 )
               }) : null}
+
             </select>
 
             <select onChange={this.selectedMove} data-order="2" className="moves">

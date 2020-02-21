@@ -1,0 +1,24 @@
+.add-pokemon{
+    width: 90%;
+    background-color: $button;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    border-radius: 20px;
+    align-items: center;
+    align-content: center;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
+    margin: 1rem;
+
+    img{
+        width: 50px;
+    }
+
+    p{
+        @extend %center;
+        text-transform: uppercase;
+        font-family: $lucky;
+        color: white;
+        font-size: 2em;
+    }
+}

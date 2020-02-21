@@ -119,11 +119,11 @@ function Header(props) {
   const drawer = (
     <div>
       <div className={`${classes.toolbar} toolbar`}>
-        <img className="logo" src={require("../../art/Logo.png")} />
+        <img className="logo" alt="logo" src={require("../../art/Logo.png")} />
       </div>
       <Divider />
       <List>
-        {["Home", "Builder", "Teams", "Resources", "About"].map(
+        {["Home", "New", "Teams", "Resources", "About"].map(
           (text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{links(text, index)}</ListItemIcon>
