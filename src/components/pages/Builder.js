@@ -28,7 +28,7 @@ class Builder extends Component {
     nextItem: "",
     previousItem: "",
     selectedPokemon: "",
-    selectedAbility: '',
+    selectedAbility: "",
     selectedMoves: [],
     team: []
   };
@@ -36,16 +36,15 @@ class Builder extends Component {
   getInfo(url) {
     //https://pokeapi.co/api/v2/pokemon/?limit=1000
     try {
-      return fetch(url)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return "error";
-          }
-        })
+      return fetch(url).then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return "error";
+        }
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -90,35 +89,33 @@ class Builder extends Component {
     );
   }
 
-
-
   selectedMove = e => {
     e.preventDefault();
     let id = e.target.dataset.order;
     let move = e.target.value;
     let valid = false;
-    console.log(id, move)
+    console.log(id, move);
     switch (id) {
-      case '1':
-        console.log('set')
+      case "1":
+        console.log("set");
         let items = [...this.state.selectedMoves];
         let item = { ...items[0] };
         item.name = move;
         items[0] = item;
         this.setState({ selectedMoves: items });
         break;
-      case '2':
+      case "2":
         this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
+          console.log(mov);
           if (mov.name === move) {
-            console.log('err')
+            console.log("err");
             valid = false;
           } else {
             valid = true;
           }
-        })
+        });
         if (valid === true) {
-          console.log('true')
+          console.log("true");
           let items = [...this.state.selectedMoves];
           let item = { ...items[1] };
           item.name = move;
@@ -127,18 +124,18 @@ class Builder extends Component {
         }
 
         break;
-      case '3':
+      case "3":
         this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
+          console.log(mov);
           if (mov.name === move) {
-            console.log('err')
+            console.log("err");
             valid = false;
           } else {
             valid = true;
           }
-        })
+        });
         if (valid === true) {
-          console.log('true')
+          console.log("true");
           let items = [...this.state.selectedMoves];
           let item = { ...items[2] };
           item.name = move;
@@ -146,18 +143,18 @@ class Builder extends Component {
           this.setState({ selectedMoves: items });
         }
         break;
-      case '4':
+      case "4":
         this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
+          console.log(mov);
           if (mov.name === move) {
-            console.log('err')
+            console.log("err");
             valid = false;
           } else {
             valid = true;
           }
-        })
+        });
         if (valid === true) {
-          console.log('true')
+          console.log("true");
           let items = [...this.state.selectedMoves];
           let item = { ...items[3] };
           item.name = move;
@@ -166,9 +163,9 @@ class Builder extends Component {
         }
         break;
       default:
-        break
+        break;
     }
-  }
+  };
 
   onSubmitPokemon = e => {
     e.preventDefault();
@@ -176,12 +173,11 @@ class Builder extends Component {
     let abil = this.state.selectedAbility;
     let item = this.state.foundItem;
     let moves = this.state.selectedMoves;
-    let newPokemon = { name: pokemon, abil: abil, item: item, moves: moves }
+    let newPokemon = { name: pokemon, abil: abil, item: item, moves: moves };
     this.setState({
       selectedPokemon: [...this.state.selectedPokemon, newPokemon]
-    })
-    console.log(this.state.selectedPokemon)
-
+    });
+    console.log(this.state.selectedPokemon);
   };
 
   onSubmitItem = e => {
@@ -197,10 +193,10 @@ class Builder extends Component {
         console.log("error test true");
         this.setState({ foundItem: "No Item Found" });
       } else {
-        this.setState({ foundItem: json.name, showItemSearch: 'closed' });
+        this.setState({ foundItem: json.name, showItemSearch: "closed" });
       }
       //don't set state in async
-      console.log(this.state.foundItem)
+      console.log(this.state.foundItem);
     });
   };
 
@@ -216,7 +212,7 @@ class Builder extends Component {
             "https://i.ya-webdesign.com/images/pokemon-question-mark-png.png",
           types: [{ type: { name: "???" } }],
           abilities: [{ ability: { name: "???" } }],
-          moves: [{ move: { name: "???" } }],
+          moves: [{ move: { name: "???" } }]
         });
       } else {
         this.setState({
@@ -267,12 +263,12 @@ class Builder extends Component {
         selectedAbility: data.abilities[0],
         showPokeSearch: "closed"
       });
-      data.moves.forEach((mov) => {
+      data.moves.forEach(mov => {
         this.setState({
           moves: [...this.state.moves, mov]
-        })
-      })
-      console.log(this.state.moves[0].move)
+        });
+      });
+      console.log(this.state.moves[0].move);
     });
   };
 
@@ -281,10 +277,9 @@ class Builder extends Component {
     this.getInfo(`https://pokeapi.co/api/v2/item/${item.name}`).then(data => {
       this.setState({
         foundItem: data.name,
-        showItemSearch: 'closed'
+        showItemSearch: "closed"
       });
     });
-
   };
 
   next = e => {
@@ -294,7 +289,7 @@ class Builder extends Component {
     });
     this.getInfo(this.state.next).then(data => {
       let pokemon = data.results;
-      console.log(data.previous)
+      console.log(data.previous);
       this.setState({ next: data.next, previous: data.previous });
       pokemon.forEach(mon => {
         this.getInfo(mon.url).then(json => {
@@ -316,7 +311,7 @@ class Builder extends Component {
     });
     this.getInfo(this.state.previous).then(data => {
       let pokemon = data.results;
-      this.setState({ next: data.next, previous: data.previous })
+      this.setState({ next: data.next, previous: data.previous });
       pokemon.forEach(mon => {
         this.getInfo(mon.url).then(json => {
           this.setState({
@@ -324,11 +319,11 @@ class Builder extends Component {
               ...this.state.showcase,
               { name: json.name, url: json.sprites.front_default }
             ]
-          })
-        })
-      })
-    })
-  }
+          });
+        });
+      });
+    });
+  };
 
   nextItem = e => {
     e.preventDefault();
@@ -396,8 +391,8 @@ class Builder extends Component {
     e.preventDefault();
     this.setState({
       selectedAbility: e.target.value
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -425,16 +420,23 @@ class Builder extends Component {
         <Modal
           content={
             <div style={styles.modalContent}>
-              <SearchBar submit={this.onSubmitName} name="name" onChange={this.onChange} placeholder='Pokemon' errorField='closed' />
+              <SearchBar
+                submit={this.onSubmitName}
+                name="name"
+                onChange={this.onChange}
+                placeholder="Pokemon"
+                errorField="closed"
+              />
               {this.map(this.state.showcase)}
               <GalleryButtons next={this.next} previous={this.previous} />
             </div>
           }
-          class={this.state.showPokeSearch} />
+          class={this.state.showPokeSearch}
+        />
 
         <div style={styles.form}>
           <SingleForm
-            modalOpen={function () {
+            modalOpen={function() {
               this.setState({ showPokeSearch: "open" });
             }.bind(this)}
             submit={this.onSubmitName}
@@ -447,18 +449,18 @@ class Builder extends Component {
             <select onChange={this.selectedAbility} id="ability">
               {this.state.abilities !== []
                 ? this.state.abilities.map((ability, index) => {
-                  return (
-                    <option key={index} value={ability.ability.name}>
-                      {ability.ability.name}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={ability.ability.name}>
+                        {ability.ability.name}
+                      </option>
+                    );
+                  })
                 : null}
             </select>
           </form>
 
           <SingleForm
-            modalOpen={function () {
+            modalOpen={function() {
               this.setState({ showItemSearch: "open" });
             }.bind(this)}
             label="Item"
@@ -469,48 +471,67 @@ class Builder extends Component {
           {/*make an array for the select and pass in info through props */}
           <form>
             <label htmlFor="moves">Moves</label>
-            <select onChange={this.selectedMove} data-order="1" className="moves">
-              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
-                return (
-                  <option key={index} value={move.move.name}>
-                    {move.move.name}
-                  </option>
-                )
-              }) : null}
-
-            </select>
-
-            <select onChange={this.selectedMove} data-order="2" className="moves">
-              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
-                return (
-                  <option key={index} value={move.move.name}>
-                    {move.move.name}
-                  </option>
-                )
-              }) : null}
-            </select>
-
-            <select onChange={this.selectedMove} data-order="3" className="moves">
+            <select
+              onChange={this.selectedMove}
+              data-order="1"
+              className="moves"
+            >
               {this.state.moves !== []
                 ? this.state.moves.map((move, index) => {
-                  return (
-                    <option key={index} value={move.move.name}>
-                      {move.move.name}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={move.move.name}>
+                        {move.move.name}
+                      </option>
+                    );
+                  })
                 : null}
             </select>
 
-            <select onChange={this.selectedMove} data-order="4" className="moves">
+            <select
+              onChange={this.selectedMove}
+              data-order="2"
+              className="moves"
+            >
               {this.state.moves !== []
                 ? this.state.moves.map((move, index) => {
-                  return (
-                    <option key={index} value={move.move.name}>
-                      {move.move.name}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={move.move.name}>
+                        {move.move.name}
+                      </option>
+                    );
+                  })
+                : null}
+            </select>
+
+            <select
+              onChange={this.selectedMove}
+              data-order="3"
+              className="moves"
+            >
+              {this.state.moves !== []
+                ? this.state.moves.map((move, index) => {
+                    return (
+                      <option key={index} value={move.move.name}>
+                        {move.move.name}
+                      </option>
+                    );
+                  })
+                : null}
+            </select>
+
+            <select
+              onChange={this.selectedMove}
+              data-order="4"
+              className="moves"
+            >
+              {this.state.moves !== []
+                ? this.state.moves.map((move, index) => {
+                    return (
+                      <option key={index} value={move.move.name}>
+                        {move.move.name}
+                      </option>
+                    );
+                  })
                 : null}
             </select>
           </form>
@@ -551,11 +572,11 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   preview: {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
     backgroundColor: "gray"
-  },
+  }
 };

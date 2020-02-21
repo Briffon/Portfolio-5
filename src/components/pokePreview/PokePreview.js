@@ -3,35 +3,14 @@ import React from "react";
 const PokePreview = props => {
   return (
     <div
-      style={styles.container}
       data-pokemon={props.item}
       onClick={props.selected}
+      className="pokepreview-container"
     >
-      <p data-pokemon={props.item}>
-        {props.name}
-        <img
-          data-pokemon={props.item}
-          style={styles.previewImg}
-          src={props.url}
-          alt={props.name}
-        />
-      </p>
+      <p>{props.name}</p>
+      <img data-pokemon={props.item} src={props.url} alt={props.name} />
     </div>
   );
 };
 
 export default PokePreview;
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    textAlign: "center",
-    margin: "1rem",
-    flexDirection: "column",
-    alignItems: 'center'
-  },
-  previewImg: {
-    width: "50px"
-  }
-};
