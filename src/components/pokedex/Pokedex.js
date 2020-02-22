@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PokePreview from "../pokePreview/PokePreview";
 import GalleryButtons from "../galleryButtons/GalleryButtons";
 import Suggestion from "../suggestions/Suggestions";
+
 class Pokedex extends Component {
   state = {
     allPokemon: [],
@@ -149,23 +150,30 @@ class Pokedex extends Component {
     if (length >= 4) {
       allMons.forEach(mon => {
         if (mon.includes(term)) {
-          console.log(`term:${term} found:${mon}`);
           suggestions.push(mon.charAt(0).toUpperCase() + mon.slice(1));
         }
       });
+
+      let newArr = [];
+
+      suggestions.forEach(newMon => {
+        if (this.state.suggestions != []) {
+          this.state.suggestions.forEach(oldMon => {
+            if (newMon !== oldMon) {
+              newArr.push(newMon);
+            }
+          })
+
+        } else {
+          suggestions = newArr
+        }
+      })
+      newArr = suggestions;
       this.setState({
-        suggestions: [
-          ...this.state.suggestions.filter(auto => {
-            suggestions.forEach(x => {
-              if (auto !== x) {
-                return auto.charAt(0).toUpperCase() + auto.slice(1);
-              }
-            });
-          }),
-          ...suggestions
-        ],
-        showSuggestion: "open"
-      });
+        suggestions: newArr,
+        showSuggestion: 'open'
+      })
+
     } else if (length < 3) {
       this.setState({
         showSuggestion: "closed"
@@ -202,16 +210,16 @@ class Pokedex extends Component {
         <div className="dex">
           {this.state.showcase.length === 9
             ? this.state.showcase.map((mon, index) => {
-                return (
-                  <PokePreview
-                    key={index}
-                    item={mon}
-                    selected={this.pokemonSelected}
-                    name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
-                    url={mon.url}
-                  />
-                );
-              })
+              return (
+                <PokePreview
+                  key={index}
+                  item={mon}
+                  selected={this.pokemonSelected}
+                  name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
+                  url={mon.url}
+                />
+              );
+            })
             : null}
         </div>
         <GalleryButtons next={this.nextMon} previous={this.previousMon} />
