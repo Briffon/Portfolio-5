@@ -14,6 +14,7 @@ class Pokedex extends Component {
     previousItem: "",
     search: "",
     suggestions: [],
+    suggestedPokemon: [],
     showSuggestion: "closed",
     selectedPokemon: [],
     isRunning: false
@@ -163,18 +164,25 @@ class Pokedex extends Component {
             if (newMon !== oldMon) {
               newArr.push(newMon);
             }
-          })
-
+          });
         } else {
-          suggestions = newArr
+          suggestions = newArr;
         }
-      })
+      });
       newArr = suggestions;
+      newArr.forEach(mon => {
+        fetch("https://pokeapi.co/api/v2/pokemon/" + mon.toLowerCase())
+          .then(res => res.json())
+          .then(data =>
+            this.setState({
+              suggestedPokemon: [...this.state.suggestedPokemon, data]
+            })
+          );
+      });
       this.setState({
         suggestions: newArr,
-        showSuggestion: 'open'
-      })
-
+        showSuggestion: "open"
+      });
     } else if (length < 3) {
       this.setState({
         showSuggestion: "closed"
@@ -185,12 +193,11 @@ class Pokedex extends Component {
   pokemonSelected = e => {
     e.preventDefault();
     this.setState({
-      selectedPokemon: e.target.innerHTML,
+      selectedPokemon: e.target.innerHTML
     });
   };
 
   render(props) {
-
     return (
       <div className="dex-container">
         <img
@@ -202,7 +209,7 @@ class Pokedex extends Component {
           <input onChange={this.submitChange} placeholder="Search.." />
           {this.state.suggestions !== [] ? (
             <Suggestion
-              item={data}
+              pokemonList={this.state.suggestedPokemon}
               select={this.props.selected}
               show={this.state.showSuggestion}
               suggestions={this.state.suggestions}
@@ -212,17 +219,17 @@ class Pokedex extends Component {
         <div className="dex">
           {this.state.showcase.length === 9
             ? this.state.showcase.map((mon, index) => {
-              let data = JSON.stringify(mon);
-              return (
-                <PokePreview
-                  key={index}
-                  item={data}
-                  selected={this.props.selected}
-                  name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
-                  url={mon.url}
-                />
-              );
-            })
+                let data = JSON.stringify(mon);
+                return (
+                  <PokePreview
+                    key={index}
+                    item={data}
+                    selected={this.props.selected}
+                    name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
+                    url={mon.url}
+                  />
+                );
+              })
             : null}
         </div>
         <GalleryButtons next={this.nextMon} previous={this.previousMon} />
