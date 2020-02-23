@@ -7,8 +7,8 @@ import PokeDisplay from "../pokeDisplay/PokeDisplay";
 import ModifyPokemon from "../modifyPokemon/ModifyPokemon";
 
 function New() {
-  const [Tname, setTname] = useState("blazin");
-  const [showInitModal, setInitModal] = useState("closed");
+  const [Tname, setTname] = useState("");
+  const [showInitModal, setInitModal] = useState("open");
   const [errorFields, setErrorFields] = useState([]);
   const [team, setTeam] = useState([]);
   const [count, setCount] = useState(team.length);
@@ -60,7 +60,6 @@ function New() {
   const closeDex = async e => {
     e.preventDefault();
     let data = JSON.parse(e.target.dataset.pokemon);
-    console.log(data.move);
     fetch("https://pokeapi.co/api/v2/pokemon/" + data.name)
       .then(res => res.json())
       .then(data => {
@@ -90,50 +89,126 @@ function New() {
     setAbility(e.target.value);
   };
 
-  const moveSelect = e => {
+  const moveSelect = async e => {
     e.preventDefault();
+    //get the move name and id
     let val = e.target.value;
     let id = e.target.dataset.moveid;
+    let valid = true;
+    let errors = [];
+    console.log("---------------------------");
+    console.log("id,val, errors and select moves arr");
+    console.log(errorFields);
     console.log(id);
     console.log(val);
     console.log(selectedMoves);
-    if (selectedMoves !== []) {
-      let valid = true;
-      selectedMoves.forEach(move => {
-        if (move === val) {
-          valid = false;
+    console.log("---------------------------");
+
+    //check for dup moves
+    selectedMoves.forEach(move => {
+      if (move === val) {
+        console.log("beep");
+        valid = false;
+
+        let error = {
+          name: "Duplicate Moves",
+          msg: "Please select a differnt move from the chosen",
+          where: parseInt(id),
+          val: val
+        };
+
+        errors.push(error);
+      }
+    });
+
+    //check for dup erros
+    let dupErrors = true;
+    console.log(errors);
+    errorFields.forEach(oldError => {
+      errors.forEach(newError => {
+        if (JSON.stringify(oldError) === JSON.stringify(newError)) {
+          console.log("match found");
+          console.log(oldError);
+          console.log(newError);
+          dupErrors = false;
         }
       });
+    });
 
-      if (valid === true) {
-        let items = [...selectedMoves];
-        let item = { ...items[id - 1] };
-        item = val;
-        items[id - 1] = item;
-        setSelectedMoves(items);
-        console.log(selectedMoves);
-      }
-    } else {
-      console.log("test");
-      let items = [...selectedMoves];
-      let item = { ...items[id - 1] };
-      item = val;
-      items[id - 1] = item;
-      setSelectedMoves(items);
-      console.log(selectedMoves);
+    if (dupErrors == true) {
+      setErrorFields([...errorFields, ...errors]);
     }
+
+    console.log("--------------------spicy content");
+    console.log(id);
+    //are old errors fixed
+    errorFields.forEach(error => {
+      if (parseInt(id) === error.where ) {
+        selectedMoves.forEach(move=>{
+            if(move===val){
+
+            }
+        })
+      }
+    });
+    //if valid add to state
+    // if (valid === true) {
+    //   let dupMoves = selectedMoves; //temp moves arr
+    //   let dupVal = val; // temp val
+    //   dupMoves[id - 1] = dupVal; //dupmoves = dupval at index
+    //   setSelectedMoves(dupMoves); // set moves = to the duplicate
+
+    //   if (errorFields) {
+    //     let valid = true;
+    //     selectedMoves.forEach((move, index) => {
+
+    //     });
+
+    //     console.log("-------------");
+    //     console.log(id);
+    //     errorFields.forEach((error, ind) => {
+    //       console.log(error);
+    //       if (ind - 1 === parseInt(id)) {
+    //         console.log(error);
+    //       }
+    //     });
+    //     console.log("------------------");
+    //   }
+    // } else {
+    //   //error
+    //   let repeat = true; // repeats = none
+    //   errors.forEach(newError => {
+    //     errorFields.forEach(oldError => {
+    //       if (JSON.stringify(newError) === JSON.stringify(oldError)) {
+    //         repeat = false; // there is a repeat
+    //       }
+    //     });
+    //   });
+
+    //   if (repeat !== false) {
+    //     setErrorFields([...errorFields, ...errors]);
+    //   }
+    // }
+
+    console.log(selectedMoves);
   };
 
-  const submitModify = e => {
+  const submitModify = async e => {
     e.preventDefault();
 
     if (ability) {
       let valid = true;
-      selectedMoves.forEach(move => {
+      let errors = [];
+      selectedMoves.forEach((move, index) => {
         if (move === "???") {
-          console.log(move);
           valid = false;
-        } else {
+          let error = {
+            name: "Duplicate Moves",
+            msg: `Please enter a move that wasn't chosen before`,
+            where: index + 1,
+            val: move
+          };
+          errors.push(error);
         }
       });
 
@@ -147,11 +222,23 @@ function New() {
           types: currentTypes
         };
         console.log(pokemon);
-        let tempTeam = team;
-        tempTeam[id] = pokemon;
-        console.log(tempTeam);
-        setTeam(tempTeam);
-        setModifyModal("closed");
+
+        if (errorFields) {
+          setErrorFields([]);
+        }
+      } else {
+        let repeat = true; // repeats = none
+        errors.forEach(newError => {
+          errorFields.forEach(oldError => {
+            if (JSON.stringify(newError) === JSON.stringify(oldError)) {
+              repeat = false; // there is a repeat
+            }
+          });
+        });
+
+        if (repeat !== false) {
+          setErrorFields([...errorFields, ...errors]);
+        }
       }
     }
   };
@@ -187,6 +274,7 @@ function New() {
         content={
           <ModifyPokemon
             id={id}
+            errors={errorFields}
             submit={submitModify}
             moveChange={moveSelect}
             movePool={movePool}

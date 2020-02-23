@@ -41,6 +41,17 @@ function ModifyPokemon(props) {
                 })
               : null}
           </select>
+          {props.errors.length > 0
+            ? props.errors.map((error, index) => {
+                if (error.where === 1) {
+                  return (
+                    <div key={index}>
+                      <p>{error.msg}</p>
+                    </div>
+                  );
+                }
+              })
+            : null}
         </div>
 
         <div className="form-input">
@@ -58,6 +69,17 @@ function ModifyPokemon(props) {
                 })
               : null}
           </select>
+          {props.errors.length > 0
+            ? props.errors.map((error, index) => {
+                if (error.where === 2) {
+                  return (
+                    <div key={index}>
+                      <p>{error.msg}</p>
+                    </div>
+                  );
+                }
+              })
+            : null}
         </div>
 
         <div className="form-input">
@@ -75,6 +97,18 @@ function ModifyPokemon(props) {
                 })
               : null}
           </select>
+          {props.errors.length > 0
+            ? props.errors.map((error, index) => {
+                console.log(error);
+                if (error.where === 3) {
+                  return (
+                    <div key={index}>
+                      <p>{error.msg}</p>
+                    </div>
+                  );
+                }
+              })
+            : null}
         </div>
 
         <div className="form-input">
@@ -92,6 +126,17 @@ function ModifyPokemon(props) {
                 })
               : null}
           </select>
+          {props.errors.length > 0
+            ? props.errors.map((error, index) => {
+                if (error.where === 4) {
+                  return (
+                    <div key={index}>
+                      <p>{error.msg}</p>
+                    </div>
+                  );
+                }
+              })
+            : null}
         </div>
         <button type="submit">Submit</button>
       </form>
