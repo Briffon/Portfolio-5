@@ -39,9 +39,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border:solid;
+  width: 200;
+  margin: 1rem;
 
   img {
-    width: 50px;
+    width: 80px;
+    border: solid;
+    margin: 0rem;
   }
 }
 

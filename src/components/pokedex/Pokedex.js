@@ -15,7 +15,8 @@ class Pokedex extends Component {
     search: "",
     suggestions: [],
     showSuggestion: "closed",
-    selectedPokemon: []
+    selectedPokemon: [],
+    isRunning: false
   };
 
   async componentDidMount() {
@@ -157,7 +158,7 @@ class Pokedex extends Component {
       let newArr = [];
 
       suggestions.forEach(newMon => {
-        if (this.state.suggestions != []) {
+        if (this.state.suggestions !== []) {
           this.state.suggestions.forEach(oldMon => {
             if (newMon !== oldMon) {
               newArr.push(newMon);
@@ -181,10 +182,10 @@ class Pokedex extends Component {
     }
   };
 
-  selectPokemon = e => {
+  pokemonSelected = e => {
     e.preventDefault();
     this.setState({
-      selectedPokemon: e.target.innerHTML
+      selectedPokemon: e.target.innerHTML,
     });
   };
 
@@ -197,11 +198,11 @@ class Pokedex extends Component {
           src="https://www.pinclipart.com/picdir/big/257-2576119_pokedex-icon-free-png-and-svg-download-clipart.png"
           alt="dex"
         />
-        <form className="dex-search" onSubmit={this.submitSeach}>
+        <form className="dex-search" onSubmit={this.submitSearch}>
           <input onChange={this.submitChange} placeholder="Search.." />
           {this.state.suggestions !== [] ? (
             <Suggestion
-              select={this.props.close}
+              select={this.props.selected}
               show={this.state.showSuggestion}
               suggestions={this.state.suggestions}
             />
@@ -210,11 +211,12 @@ class Pokedex extends Component {
         <div className="dex">
           {this.state.showcase.length === 9
             ? this.state.showcase.map((mon, index) => {
+              let data = JSON.stringify(mon);
               return (
                 <PokePreview
                   key={index}
-                  item={mon}
-                  selected={this.pokemonSelected}
+                  item={data}
+                  selected={this.props.selected}
                   name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
                   url={mon.url}
                 />
