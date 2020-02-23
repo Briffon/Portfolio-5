@@ -202,6 +202,7 @@ class Pokedex extends Component {
           <input onChange={this.submitChange} placeholder="Search.." />
           {this.state.suggestions !== [] ? (
             <Suggestion
+              item={data}
               select={this.props.selected}
               show={this.state.showSuggestion}
               suggestions={this.state.suggestions}

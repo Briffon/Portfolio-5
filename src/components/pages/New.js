@@ -3,7 +3,9 @@ import { SingleForm } from "../singleForm/SingleForm";
 import Modal from "../modal/Modal";
 import AddPokemon from "../addPokemon/AddPokemon";
 import Pokedex from "../pokedex/Pokedex";
-import PokeDisplay from '../pokeDisplay/PokeDisplay'
+import PokeDisplay from '../pokeDisplay/PokeDisplay';
+import ModifyPokemon from '../modifyPokemon/ModifyPokemon'
+
 
 function New() {
     const [Tname, setTname] = useState("Chase Sucks");
@@ -13,6 +15,9 @@ function New() {
     const [count, setCount] = useState(team.length);
     const [showAddModal, setShowAddModal] = useState("closed");
     const [modifyModal, setModifyModal] = useState("closed");
+    const [currentPokemon, setCurrentPokemon] = useState({});
+    const [currentPokemonImg, setCurrentPokemonImg] = useState('');
+    const [movePool, setMovePool] = useState(['???']);
 
     const submitTeamName = e => {
         e.preventDefault();
@@ -36,26 +41,29 @@ function New() {
         setShowAddModal("open");
     };
 
-
     const closeDex = async (e) => {
         e.preventDefault();
         let data = JSON.parse(e.target.dataset.pokemon);
+        console.log(data.move)
         fetch('https://pokeapi.co/api/v2/pokemon/' + data.name)
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 setTeam([...team, data]);
+                setCurrentPokemon(data);
+                setCurrentPokemonImg(data.sprites.front_default);
+                setMovePool([...movePool, ...data.moves])
             })
-
         await setCount(count + 1);
         setShowAddModal('closed');
+        setModifyModal('open');
+
+
     };
 
     const edit = e => {
         e.preventDefault();
         console.log(e);
     }
-
 
     return (
         <div className={`builder-container`}>
@@ -83,6 +91,8 @@ function New() {
                     </div>
                 }
             />
+            {console.log(movePool)}
+            <Modal class={`modal-modify ` + modifyModal} content={<ModifyPokemon img={currentPokemonImg} pokemon={currentPokemon} />}></Modal>
             <h2>{Tname}</h2>
 
             <div className="pokemon-container">
@@ -92,7 +102,7 @@ function New() {
                 }) : null}
 
             </div>
-        </div>
+        </div >
     );
 }
 
