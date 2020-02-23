@@ -45,7 +45,7 @@ class Pokedex extends Component {
     });
 
     //on load fetch pokemon data and set to showcase
-    await this.getInfo("https://pokeapi.co/api/v2/pokemon/?limit=9").then(
+    await this.getInfo("https://pokeapi.co/api/v2/pokemon/?limit=10").then(
       data => {
         let pokemon = data.results;
         this.setState({ next: data.next, previous: data.previous });
@@ -144,20 +144,26 @@ class Pokedex extends Component {
   };
 
   submitChange = e => {
+    //get length of term, list of all pokemon, the search term and create an empty array
     let length = e.target.value.length;
     let allMons = this.state.allPokemon;
     let term = e.target.value;
     let suggestions = [];
 
+    //if the search term is more than 4 characters search
     if (length >= 4) {
+      //compare to each pokemon
       allMons.forEach(mon => {
         if (mon.includes(term)) {
+          //if alike, make the first letter uppercase and add to the temp array
           suggestions.push(mon.charAt(0).toUpperCase() + mon.slice(1));
         }
       });
 
+      //make a temporary array
       let newArr = [];
 
+      //look through old array skipping dupplicates and adding to the temp array, if state is empty set the array
       suggestions.forEach(newMon => {
         if (this.state.suggestions !== []) {
           this.state.suggestions.forEach(oldMon => {
@@ -199,40 +205,41 @@ class Pokedex extends Component {
 
   render(props) {
     return (
-      <div className="dex-container">
-        <img
-          className="dex-img"
-          src="https://www.pinclipart.com/picdir/big/257-2576119_pokedex-icon-free-png-and-svg-download-clipart.png"
-          alt="dex"
-        />
-        <form className="dex-search" onSubmit={this.submitSearch}>
-          <input onChange={this.submitChange} placeholder="Search.." />
-          {this.state.suggestions !== [] ? (
-            <Suggestion
-              pokemonList={this.state.suggestedPokemon}
-              select={this.props.selected}
-              show={this.state.showSuggestion}
-              suggestions={this.state.suggestions}
-            />
-          ) : null}
-        </form>
-        <div className="dex">
-          {this.state.showcase.length === 9
-            ? this.state.showcase.map((mon, index) => {
-                let data = JSON.stringify(mon);
-                return (
-                  <PokePreview
-                    key={index}
-                    item={data}
-                    selected={this.props.selected}
-                    name={mon.name.charAt(0).toUpperCase() + mon.name.slice(1)}
-                    url={mon.url}
-                  />
-                );
-              })
-            : null}
+      <div className="gameboy">
+        <div className="dex-container">
+          <h2 className="dex-heading">PokeDex</h2>
+          <form className="dex-search" onSubmit={this.submitSearch}>
+            <input onChange={this.submitChange} placeholder="Search.." />
+            {this.state.suggestions !== [] ? (
+              <Suggestion
+                pokemonList={this.state.suggestedPokemon}
+                select={this.props.selected}
+                show={this.state.showSuggestion}
+                suggestions={this.state.suggestions}
+              />
+            ) : null}
+          </form>
+          <p className="dex-info">Find your desired pokemon</p>
+          <div className="dex">
+            {this.state.showcase.length === 10
+              ? this.state.showcase.map((mon, index) => {
+                  let data = JSON.stringify(mon);
+                  return (
+                    <PokePreview
+                      key={index}
+                      item={data}
+                      selected={this.props.selected}
+                      name={
+                        mon.name.charAt(0).toUpperCase() + mon.name.slice(1)
+                      }
+                      url={mon.url}
+                    />
+                  );
+                })
+              : null}
+          </div>
+          <GalleryButtons next={this.nextMon} previous={this.previousMon} />
         </div>
-        <GalleryButtons next={this.nextMon} previous={this.previousMon} />
       </div>
     );
   }

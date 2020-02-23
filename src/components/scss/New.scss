@@ -1,66 +1,43 @@
-.modal-content{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    place-content: center;
-    align-items: center;
-    background-color: $form;
-    width: 30%;
-    height: 20%;
-    @extend %center;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px  10px rgba(109, 103, 110, .5);
-    border: none;
+.builder-container {
+  position: relative;
 
-    button{
-        width: 90%;
-        border: none;
-        border-radius: 10px;
-        text-transform: uppercase;
-        font-weight: 600;
-        font-family: $lucky;
-        font-size: 1.5em;
-        padding: .5rem;
-        letter-spacing: 2px;
-        background-color: $button;
-        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.5);
-        margin-top: 1rem;
-    }
-
+  h2 {
+    letter-spacing: 5px;
+    font-size: 3em;
+    color: $heading;
+    font-family: $lucky;
+    text-align: center;
+  }
 }
 
-.builder-container{
-    position: relative;
-
-    h2{
-        letter-spacing: 5px;
-        font-size: 3em;
-        color: $heading;
-        font-family: $lucky;
-        text-align: center;
-    }
+.closed {
+  display: none;
 }
 
-.closed{
-    display: none;
-}
-.modal-team-name{
-    background-color: rgba(0, 0, 0, 1)!important;
-}
-.modal-team-name::after{
-    content: "";
-    background: url('https://images5.alphacoders.com/613/thumb-1920-613925.jpg');
-    opacity: 0.4;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1; 
-    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.8); 
+.modal-team-name {
+  background-color: rgba(0, 0, 0, 1) !important;
 }
 
-.pokemon-container{
-    display: flex;
-    flex-direction: column;
+.modal-team-name::after {
+  content: "";
+  background: url("https://images5.alphacoders.com/613/thumb-1920-613925.jpg");
+  opacity: 0.4;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.8);
+}
+
+.pokemon-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 320px) {
+  .modal-team-name {
+    height: 90vh !important;
+  }
 }

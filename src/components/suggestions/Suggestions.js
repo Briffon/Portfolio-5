@@ -10,7 +10,6 @@ const Suggestion = props => {
             onClick={props.select}
             key={index}
           >
-            {" "}
             {item}
           </p>
         );
