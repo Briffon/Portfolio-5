@@ -17,13 +17,14 @@ function New() {
   const [currentPokemon, setCurrentPokemon] = useState({});
   const [currentPokemonImg, setCurrentPokemonImg] = useState("");
   const [movePool, setMovePool] = useState([{ move: { name: "???" } }]);
-  const [ability, setAbility] = useState({});
+  const [ability, setAbility] = useState();
   const [selectedMoves, setSelectedMoves] = useState([
     "???",
     "???",
     "???",
     "???"
   ]);
+  const [disable, setDisable] = useState("active");
 
   const submitTeamName = e => {
     e.preventDefault();
@@ -42,9 +43,16 @@ function New() {
     }
   };
 
-  const addPokemonClick = e => {
+  const addPokemonClick = async e => {
     e.preventDefault();
-    setShowAddModal("open");
+    if (count >= 6) {
+      await setDisable("disabled");
+    }
+
+    if (disable === "active" && !(count >= 6)) {
+      console.log(count);
+      setShowAddModal("open");
+    }
   };
 
   const closeDex = async e => {
@@ -57,7 +65,8 @@ function New() {
         setTeam([...team, data]);
         setCurrentPokemon(data);
         setCurrentPokemonImg(data.sprites.front_default);
-        setMovePool([...movePool, ...data.moves]);
+        setMovePool([{ move: { name: "???" } }, ...data.moves]);
+        setAbility(data.abilities[0]);
       });
     await setCount(count + 1);
     setShowAddModal("closed");
@@ -109,9 +118,30 @@ function New() {
     }
   };
 
-  const submitModify =e=>{
-      
-  }
+  const submitModify = e => {
+    e.preventDefault();
+
+    if (ability) {
+      let valid = true;
+      selectedMoves.forEach(move => {
+        if (move === "???") {
+          console.log(move);
+          valid = false;
+        } else {
+        }
+      });
+
+      if (valid === true) {
+        let pokemon = {
+          pokemon: currentPokemon,
+          ability: ability,
+          moves: selectedMoves
+        };
+        console.log(pokemon);
+        setModifyModal("closed");
+      }
+    }
+  };
 
   return (
     <div className={`builder-container`}>
@@ -143,7 +173,7 @@ function New() {
         class={`modal-modify ` + modifyModal}
         content={
           <ModifyPokemon
-          submit={submitModify}
+            submit={submitModify}
             moveChange={moveSelect}
             movePool={movePool}
             img={currentPokemonImg}
