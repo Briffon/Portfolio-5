@@ -1,5 +1,11 @@
 .toolbar {
   background-color: $accent;
+  height: 10%;
+  display: flex;
+
+  img {
+    width: 60px;
+  }
 }
 
 .drawer-root h6 {
@@ -9,6 +15,7 @@
 
 .drawer {
   background-color: red;
+  border: 20px solid;
 }
 
 .link {
@@ -38,4 +45,10 @@
 
 .MuiListItem-root {
   justify-content: center !important;
+}
+
+@media (max-width: 600px) {
+  .MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-6 {
+    box-shadow: 0px 0px 5px 10px rgba(31, 29, 29, 0.4) !important;
+  }
 }

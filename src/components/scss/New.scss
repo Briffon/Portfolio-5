@@ -34,10 +34,92 @@
 .pokemon-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.poke-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 60px;
+  box-shadow: -5px 5px 0px 0px rgba(31, 29, 29, 0.3);
+  margin-top: 1rem;
+  width: 95%;
+}
+
+.type-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem;
+}
+
+.poke-display-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    text-transform: uppercase;
+    font-family: $lucky;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 1em;
+  }
+
+  img {
+    width: 75px;
+    background-color: #eff9f0;
+    border-radius: 35px;
+    box-shadow: -4px 2px 0px 0px rgba(63, 59, 59, 0.4);
+  }
+}
+
+.type-bubble-container {
+  padding: 6px;
+  border-radius: 20px;
+  border: 1px solid black;
+  text-align: center;
+  margin: 5px;
+  box-shadow: -2px 2px 0px 0px rgba(63, 59, 59, 0.6);
+  width: 60px;
+}
+
+.edit-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  box-shadow: -2px 2px 0px 0px rgba(63, 59, 59, 0.6);
+}
+
+@media (min-width: 425px) {
+  .pokemon-container {
+  }
+  .poke-display-head {
+    flex-direction: row;
+    p {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin: 1rem;
+    }
+  }
 }
 
 @media (max-width: 320px) {
   .modal-team-name {
     height: 90vh !important;
+  }
+}
+@media (min-width: 768px) {
+  .type-container {
+    flex-direction: row;
+  }
+  .type-bubble-container {
+    width: 80px;
+  }
+  .poke-display {
+    justify-content: space-between;
   }
 }

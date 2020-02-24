@@ -65,21 +65,21 @@ const PokeDisplay = props => {
     }
     return style;
   };
-//   const color = type => {
-//     let style = "";
+  //   const color = type => {
+  //     let style = "";
 
-//     switch (type) {
-//       case "grass":
-//         style = "green";
-//         break;
-//       case "poison":
-//         style = "#A040A0";
-//         break;
-//       default:
-//         break;
-//     }
-//     return style;
-//   };
+  //     switch (type) {
+  //       case "grass":
+  //         style = "green";
+  //         break;
+  //       case "poison":
+  //         style = "#A040A0";
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //     return style;
+  //   };
   return (
     <div
       className="poke-display"
@@ -89,8 +89,10 @@ const PokeDisplay = props => {
         color: "#FFFFFF"
       }}
     >
-      <img src={props.img} alt={props.pokemon.pokemon.name} />
-      <p>{props.pokemon.pokemon.name}</p>
+      <div className="poke-display-head">
+        <img src={props.img} alt={props.pokemon.pokemon.name} />
+        <p>{props.pokemon.pokemon.name}</p>
+      </div>
       <div className="type-container">
         {props.pokemon.types !== []
           ? props.pokemon.types.map((type, index) => {

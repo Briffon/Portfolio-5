@@ -7,336 +7,298 @@ import PokeDisplay from "../pokeDisplay/PokeDisplay";
 import ModifyPokemon from "../modifyPokemon/ModifyPokemon";
 
 function New() {
-    const [Tname, setTname] = useState("Blazin");
-    const [showInitModal, setInitModal] = useState("closed");
-    const [errorFields, setErrorFields] = useState([]);
-    const [team, setTeam] = useState([]);
-    const [count, setCount] = useState(team.length);
-    const [showAddModal, setShowAddModal] = useState("close");
-    const [modifyModal, setModifyModal] = useState("closed");
-    const [currentPokemon, setCurrentPokemon] = useState({});
-    const [currentPokemonImg, setCurrentPokemonImg] = useState("");
-    const [movePool, setMovePool] = useState([{ move: { name: "???" } }]);
-    const [ability, setAbility] = useState();
-    const [selectedMoves, setSelectedMoves] = useState([
-        "???",
-        "???",
-        "???",
-        "???"
-    ]);
-    const [disable, setDisable] = useState("active");
-    const [id, setId] = useState(count);
-    const [currentTypes, setCurrentTypes] = useState([]);
+  const [Tname, setTname] = useState("Blazin");
+  const [showInitModal, setInitModal] = useState("closed");
+  const [errorFields, setErrorFields] = useState([]);
+  const [team, setTeam] = useState([
+    {
+      pokemon: { name: "charizard" },
+      ability: {
+        name: "solar-power",
+        url: "https://pokeapi.co/api/v2/ability/94/"
+      },
+      id: 0,
+      img:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+      types: [
+        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
+        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
+      ],
+      moves: [
+        { name: "fire-punch", id: 1 },
+        { name: "thunder-punch", id: 2 },
+        { name: "submission", id: 3 },
+        { name: "ember", id: 4 }
+      ]
+    }
+  ]);
+  const [count, setCount] = useState(team.length);
+  const [showAddModal, setShowAddModal] = useState("closed");
+  const [modifyModal, setModifyModal] = useState("closed");
+  const [currentPokemon, setCurrentPokemon] = useState({});
+  const [currentPokemonImg, setCurrentPokemonImg] = useState("");
+  const [movePool, setMovePool] = useState([{ move: { name: "???" } }]);
+  const [ability, setAbility] = useState();
+  const [selectedMoves, setSelectedMoves] = useState([
+    { name: "???", id: "1" },
+    { name: "???", id: "2" },
+    { name: "???", id: "3" },
+    { name: "???", id: "4" }
+  ]);
+  const [disable, setDisable] = useState("active");
+  const [id, setId] = useState(count);
+  const [currentTypes, setCurrentTypes] = useState([]);
 
-    const submitTeamName = e => {
-        e.preventDefault();
-        if (Tname !== "") {
-            setInitModal("closed");
-        } else {
-            let valid = false;
-            errorFields.forEach(error => {
-                if (error.name === "Team Name") {
-                    valid = true;
-                }
-            });
-            if (valid === false) {
-                setErrorFields([...errorFields, { name: "Team Name" }]);
-            }
+  const submitTeamName = e => {
+    e.preventDefault();
+    if (Tname !== "") {
+      setInitModal("closed");
+    } else {
+      let valid = false;
+      errorFields.forEach(error => {
+        if (error.name === "Team Name") {
+          valid = true;
         }
-    };
+      });
+      if (valid === false) {
+        setErrorFields([...errorFields, { name: "Team Name" }]);
+      }
+    }
+  };
 
-    const addPokemonClick = async e => {
-        e.preventDefault();
-        if (count >= 6) {
-            await setDisable("disabled");
-        }
+  const addPokemonClick = async e => {
+    e.preventDefault();
+    if (count >= 6) {
+      await setDisable("disabled");
+    }
 
-        if (disable === "active" && !(count >= 6)) {
-            console.log(count);
-            setShowAddModal("open");
-        }
-    };
+    if (disable === "active" && !(count >= 6)) {
+      console.log(count);
+      setShowAddModal("open");
+    }
+  };
 
-    const closeDex = async e => {
-        e.preventDefault();
-        let data = JSON.parse(e.target.dataset.pokemon);
-        fetch("https://pokeapi.co/api/v2/pokemon/" + data.name)
-            .then(res => res.json())
-            .then(data => {
-                setCurrentPokemon(data);
-                setCurrentPokemonImg(data.sprites.front_default);
-                setMovePool([{ move: { name: "???" } }, ...data.moves]);
-                setSelectedMoves(["???", "???", "???", "???"]);
-                setAbility(data.abilities[0]);
-                setId(count);
-                setCurrentTypes(data.types);
-            });
-        await setCount(count + 1);
-        setShowAddModal("closed");
-        setModifyModal("open");
-    };
+  const closeDex = async e => {
+    e.preventDefault();
+    let data = JSON.parse(e.target.dataset.pokemon);
+    fetch("https://pokeapi.co/api/v2/pokemon/" + data.name)
+      .then(res => res.json())
+      .then(data => {
+        setCurrentPokemon(data);
+        setCurrentPokemonImg(data.sprites.front_default);
+        setMovePool([{ move: { name: "???" } }, ...data.moves]);
+        setSelectedMoves([
+          { name: "???", id: "1" },
+          { name: "???", id: "2" },
+          { name: "???", id: "3" },
+          { name: "???", id: "4" }
+        ]);
+        setAbility(data.abilities[0]);
+        setId(count);
+        setCurrentTypes(data.types);
+      });
+    await setCount(count + 1);
+    setShowAddModal("closed");
+    setModifyModal("open");
+  };
 
-    const edit = e => {
-        e.preventDefault();
-        let id = e.target.parentElement.dataset.pokemon;
-        let data = team[id];
-        console.log(data);
-    };
+  const edit = e => {
+    e.preventDefault();
+    let id = e.target.parentElement.dataset.pokemon;
+    let data = team[id];
+    fetch("https://pokeapi.co/api/v2/pokemon/" + data.pokemon.name)
+      .then(res => res.json())
+      .then(data => {
+        setCurrentPokemon(data);
+        setCurrentPokemonImg(data.sprites.front_default);
+        setMovePool([{ move: { name: "???" } }, ...data.moves]);
+        setSelectedMoves(...data.moves);
+        setAbility(data.abilities[0]);
+        setId(count);
+        setCurrentTypes(data.types);
+      });
+    setShowAddModal("closed");
+    setModifyModal("open");
+    console.log(data);
+  };
 
-    const selectedAbility = e => {
-        e.preventDefault();
-        console.log(e.target.value);
-        setAbility(e.target.value);
-    };
+  const selectedAbility = e => {
+    e.preventDefault();
+    console.log(e.target.value);
+    setAbility(e.target.value);
+  };
 
-    const moveSelect = async e => {
-        e.preventDefault();
-        //get the move name and id
-        let val = e.target.value;
-        let id = e.target.dataset.moveid;
-        let valid = true;
-        let errors = [];
-        console.log("---------------------------");
-        console.log("id,val, errors and select moves arr");
-        console.log(errorFields);
-        console.log(id);
-        console.log(val);
-        console.log(selectedMoves);
-        console.log("---------------------------");
+  const moveSelect = async e => {
+    e.preventDefault();
+    //get value and id
+    let val = e.target.value;
+    let id = parseInt(e.target.dataset.moveid);
+    console.log(val);
+    console.log(id);
 
-        //check for dup moves
-        selectedMoves.forEach(move => {
-            if (move === val) {
-                console.log("beep");
+    //clear errors and check to see if this move has already been selected
+    let empty = [];
+    setErrorFields(empty);
+    let valid = true;
+
+    let errors = [];
+    selectedMoves.forEach((move, index) => {
+      if (val === "???") {
+        let error = {
+          msg: `${val} has already been selected`,
+          where: id
+        };
+        errors = [error];
+      } else if (move.name === val && index !== id) {
+        valid = false;
+        let error = {
+          msg: `${val} has already been selected`,
+          where: id
+        };
+        errors.push(error);
+      }
+    });
+
+    //if erros exits display them
+    if (errors.length > 0) {
+      setErrorFields([...errors]);
+    } else {
+      let tempMoves = selectedMoves;
+      tempMoves[id - 1] = { name: val, id: id };
+      setSelectedMoves(tempMoves);
+    }
+  };
+
+  const submitModify = e => {
+    e.preventDefault();
+    let errors = [];
+    //need to clear selectors to repersent ???
+    console.log(selectedMoves);
+    for (let i = 0; i < selectedMoves.length; i++) {
+      let tempMoves = selectedMoves.slice();
+      let index = selectedMoves.indexOf(tempMoves[i]);
+      let valid = true;
+      tempMoves.splice(i, 1);
+      console.log(
+        "index :" + i,
+        selectedMoves[i].name + " : " + index + "---------------"
+      );
+      for (let x = 0; x < tempMoves.length; x++) {
+        if (
+          selectedMoves[i].name === tempMoves[x].name &&
+          selectedMoves[i].where === tempMoves[x].where
+        ) {
+          //if names match but not ids
+          console.log("------------found");
+          let error = {
+            msg: `${selectedMoves[i].name} has already been selected`,
+            where: selectedMoves[i].id
+          };
+          console.log(error);
+          //cehck to se fi erros caontisn erros
+
+          if (errors.length > 0) {
+            console.log("err chl point");
+            errors.forEach(err => {
+              //if error name and id match dont add
+              if (err.where === error.where) {
+                console.log("displaying non unique error -----------------");
+                console.log(err);
+                console.log(error);
                 valid = false;
-
-                let error = {
-                    name: "Duplicate Moves",
-                    msg: "Please select a different move from the chosen",
-                    where: parseInt(id),
-                    val: val
-                };
-
-                errors.push(error);
-            }
-        });
-
-        //check for dup erros
-        let dupErrors = true;
-        console.log(errors);
-        errorFields.forEach(oldError => { //for each previous errpr
-            errors.forEach(newError => { //compare to new rror
-                if (JSON.stringify(oldError) === JSON.stringify(newError)) {
-                    console.log("match found");
-                    console.log(oldError);
-                    console.log(newError);
-                    dupErrors = false;
-                }
+              }
             });
-        });
+          }
 
-        if (dupErrors == true) {
-            setErrorFields([...errorFields, ...errors]);
+          if (valid === true) {
+            console.log("pushgin err -----------------");
+            console.log(error);
+            errors.push(error);
+          }
         }
+      }
+    }
 
-        if (valid === true && dupErrors === true) {
-            let dupMoves = selectedMoves; //temp moves arr
-            let dupVal = val; // temp val
-            dupMoves[id - 1] = dupVal; //dupmoves = dupval at index
-            setSelectedMoves(dupMoves); // set moves = to the duplicate
+    if (errors.length > 0) {
+      console.log("displaying errors----------");
+      console.log(errors);
+      setErrorFields(errors);
+    } else {
+      let pokemon = {
+        pokemon: currentPokemon,
+        ability: ability,
+        moves: selectedMoves,
+        id: id,
+        img: currentPokemonImg,
+        types: currentTypes
+      };
+      setTeam([...team, pokemon]);
+      setModifyModal("closed");
+    }
+  };
+
+  return (
+    <div className={`builder-container`}>
+      <Modal
+        class={`modal-dex ` + showAddModal}
+        content={
+          <div>
+            <Pokedex selected={closeDex} close={closeDex} />
+          </div>
         }
-
-        console.log("--------------------spicy content");
-        console.log(errors)
-        console.log(id);
-
-        //are old errors fixed
-        let fixed = true;
-        errorFields.forEach((error, inde) => {
-            if (parseInt(id) === error.where) {
-                selectedMoves.forEach((move, index) => {
-                    if (move === val) {
-                        console.log("match found");
-                        fixed = false;
-                        console.log("temp");
-                        let temp = [];
-                        let fixedError = errorFields.splice(inde, 1);
-                        console.log(fixedError);
-                        errorFields.forEach(error => {
-                            if (error !== fixedError) {
-                                console.log(error);
-                                temp.push(error);
-                            }
-                        });
-                        setErrorFields(temp);
-                    }
-                });
-
-                if (fixed == true) {
-                } else {
-                }
-            }
-        });
-
-
-        if (errors !== []) {
-            console.log("------------")
-            console.log(errors)
-            console.log(errorFields)
-            await setErrorFields(...errorFields, ...errors)
-            console.log('-----')
-            console.log(errorFields);
-        }
-
-
-
-        console.log(selectedMoves);
-        console.log(errorFields);
-    };
-
-    const submitModify = async e => {
-        e.preventDefault();
-
-        if (ability) {
-            let valid = true;
-            let errors = [];
-            //check to see if move = ???
-            selectedMoves.forEach((move, index) => {
-                if (move === "???") {
-                    valid = false;
-                    let error = {
-                        name: "Duplicate Moves",
-                        msg: `Please enter a move that wasn't chosen before`,
-                        where: index + 1,
-                        val: move
-                    };
-                    errors.push(error);
-                }
-            });
-
-            //check for dup errors
-            let dupErrors = true;
-            console.log(errorFields)
-            errorFields.forEach(oldError => {
-                errors.forEach(newError => {
-                    if (JSON.stringify(oldError) === JSON.stringify(newError)) {
-                        console.log("match found");
-                        console.log(oldError);
-                        console.log(newError);
-                        dupErrors = false;
-                    }
-                });
-            });
-
-            if (dupErrors == true) {
-                setErrorFields([...errorFields, ...errors]);
-            }
-
-            //   if (valid === true) {
-            //     let pokemon = {
-            //       pokemon: currentPokemon,
-            //       ability: ability,
-            //       moves: selectedMoves,
-            //       id: id,
-            //       img: currentPokemonImg,
-            //       types: currentTypes
-            //     };
-            //     console.log(pokemon);
-
-            //     check for errors
-            //     if (errorFields) {
-            //       let currentMoves = selectedMoves;
-            //       currentMoves.forEach(moves => {
-            //         selectedMoves.forEach(dupMoves => {
-            //           if (moves === dupMoves) {
-            //             console.log(moves);
-            //           }
-            //         });
-            //       });
-            //     }
-
-            //         if (errorFields) {
-            //           setErrorFields([]);
-            //         }
-            //       } else {
-            //         let repeat = true; // repeats = none
-            //         errors.forEach(newError => {
-            //           errorFields.forEach(oldError => {
-            //             if (JSON.stringify(newError) === JSON.stringify(oldError)) {
-            //               repeat = false; // there is a repeat
-            //             }
-            //           });
-            //         });
-
-            //         if (repeat !== false) {
-            //           setErrorFields([...errorFields, ...errors]);
-            //         }
-            //   }
-        }
-    };
-
-    return (
-        <div className={`builder-container`}>
-            <Modal
-                class={`modal-dex ` + showAddModal}
-                content={
-                    <div>
-                        <Pokedex selected={closeDex} close={closeDex} />
-                    </div>
-                }
+      />
+      <Modal
+        class={`modal-team-name ` + showInitModal}
+        content={
+          <div className={`team-name-container`}>
+            <SingleForm
+              submit={submitTeamName}
+              button={<button type="submit">Confirm</button>}
+              placeholder="Enter name"
+              label="Team Name"
+              name="name"
+              type="text"
+              onChange={e => setTname(e.target.value)}
             />
-            <Modal
-                class={`modal-team-name ` + showInitModal}
-                content={
-                    <div className={`team-name-container`}>
-                        <SingleForm
-                            submit={submitTeamName}
-                            button={<button type="submit">Confirm</button>}
-                            placeholder="Enter name"
-                            label="Team Name"
-                            name="name"
-                            type="text"
-                            onChange={e => setTname(e.target.value)}
-                        />
-                    </div>
-                }
-            />
-            <Modal
-                class={`modal-modify ` + modifyModal}
-                content={
-                    <ModifyPokemon
-                        id={id}
-                        errors={errorFields}
-                        submit={submitModify}
-                        moveChange={moveSelect}
-                        movePool={movePool}
-                        img={currentPokemonImg}
-                        pokemon={currentPokemon}
-                        abilityChange={selectedAbility}
-                    />
-                }
-            ></Modal>
-            <h2>{Tname}</h2>
+          </div>
+        }
+      />
+      <Modal
+        class={`modal-modify ` + modifyModal}
+        content={
+          <ModifyPokemon
+            id={id}
+            errors={errorFields}
+            submit={submitModify}
+            moveChange={moveSelect}
+            movePool={movePool}
+            img={currentPokemonImg}
+            pokemon={currentPokemon}
+            abilityChange={selectedAbility}
+          />
+        }
+      ></Modal>
+      <h2>{Tname}</h2>
 
-            <div className="pokemon-container">
-                <AddPokemon click={addPokemonClick} count={count} />
-                {team !== []
-                    ? team.map((mon, index) => {
-                        console.log(mon);
-                        return (
-                            <PokeDisplay
-                                id={index}
-                                img={mon.img}
-                                edit={edit}
-                                pokemon={mon}
-                                key={index}
-                            />
-                        );
-                    })
-                    : null}
-            </div>
-        </div>
-    );
+      <div className="pokemon-container">
+        <AddPokemon click={addPokemonClick} count={count} />
+        {team !== []
+          ? team.map((mon, index) => {
+              console.log(mon);
+              return (
+                <PokeDisplay
+                  id={index}
+                  img={mon.img}
+                  edit={edit}
+                  pokemon={mon}
+                  key={index}
+                />
+              );
+            })
+          : null}
+      </div>
+    </div>
+  );
 }
 
 export default New;
