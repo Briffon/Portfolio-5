@@ -7,8 +7,8 @@ import PokeDisplay from "../pokeDisplay/PokeDisplay";
 import ModifyPokemon from "../modifyPokemon/ModifyPokemon";
 
 function New() {
-  const [Tname, setTname] = useState("");
-  const [showInitModal, setInitModal] = useState("open");
+  const [Tname, setTname] = useState("Blazin");
+  const [showInitModal, setInitModal] = useState("closed");
   const [errorFields, setErrorFields] = useState([]);
   const [team, setTeam] = useState([]);
   const [count, setCount] = useState(team.length);
@@ -139,18 +139,45 @@ function New() {
       setErrorFields([...errorFields, ...errors]);
     }
 
+    if (valid === true && dupErrors === true) {
+      let dupMoves = selectedMoves; //temp moves arr
+      let dupVal = val; // temp val
+      dupMoves[id - 1] = dupVal; //dupmoves = dupval at index
+      setSelectedMoves(dupMoves); // set moves = to the duplicate
+    }
+
     console.log("--------------------spicy content");
     console.log(id);
-    //are old errors fixed
-    errorFields.forEach(error => {
-      if (parseInt(id) === error.where ) {
-        selectedMoves.forEach(move=>{
-            if(move===val){
 
-            }
-        })
+    //are old errors fixed
+    let fixed = true;
+    errorFields.forEach((error, inde) => {
+      if (parseInt(id) === error.where) {
+        selectedMoves.forEach((move, index) => {
+          if (move === val) {
+            console.log("match found");
+            fixed = false;
+            console.log("temp");
+            let temp = [];
+            let fixedError = errorFields.splice(inde, 1);
+            console.log(fixedError);
+            errorFields.forEach(error => {
+              if (error !== fixedError) {
+                console.log(error);
+                temp.push(error);
+              }
+            });
+            console.log(temp);
+            setErrorFields(temp);
+          }
+        });
+
+        if (fixed == true) {
+        } else {
+        }
       }
     });
+
     //if valid add to state
     // if (valid === true) {
     //   let dupMoves = selectedMoves; //temp moves arr
@@ -191,6 +218,7 @@ function New() {
     // }
 
     console.log(selectedMoves);
+    console.log(errorFields);
   };
 
   const submitModify = async e => {
@@ -199,6 +227,7 @@ function New() {
     if (ability) {
       let valid = true;
       let errors = [];
+      //check to see if move = ???
       selectedMoves.forEach((move, index) => {
         if (move === "???") {
           valid = false;
@@ -212,34 +241,63 @@ function New() {
         }
       });
 
-      if (valid === true) {
-        let pokemon = {
-          pokemon: currentPokemon,
-          ability: ability,
-          moves: selectedMoves,
-          id: id,
-          img: currentPokemonImg,
-          types: currentTypes
-        };
-        console.log(pokemon);
-
-        if (errorFields) {
-          setErrorFields([]);
-        }
-      } else {
-        let repeat = true; // repeats = none
+      //check for dup erros
+      let dupErrors = true;
+      errorFields.forEach(oldError => {
         errors.forEach(newError => {
-          errorFields.forEach(oldError => {
-            if (JSON.stringify(newError) === JSON.stringify(oldError)) {
-              repeat = false; // there is a repeat
-            }
-          });
+          if (JSON.stringify(oldError) === JSON.stringify(newError)) {
+            console.log("match found");
+            console.log(oldError);
+            console.log(newError);
+            dupErrors = false;
+          }
         });
+      });
 
-        if (repeat !== false) {
-          setErrorFields([...errorFields, ...errors]);
-        }
+      if (dupErrors == true) {
+        setErrorFields([...errorFields, ...errors]);
       }
+
+      //   if (valid === true) {
+      //     let pokemon = {
+      //       pokemon: currentPokemon,
+      //       ability: ability,
+      //       moves: selectedMoves,
+      //       id: id,
+      //       img: currentPokemonImg,
+      //       types: currentTypes
+      //     };
+      //     console.log(pokemon);
+
+      //     check for errors
+      //     if (errorFields) {
+      //       let currentMoves = selectedMoves;
+      //       currentMoves.forEach(moves => {
+      //         selectedMoves.forEach(dupMoves => {
+      //           if (moves === dupMoves) {
+      //             console.log(moves);
+      //           }
+      //         });
+      //       });
+      //     }
+
+      //         if (errorFields) {
+      //           setErrorFields([]);
+      //         }
+      //       } else {
+      //         let repeat = true; // repeats = none
+      //         errors.forEach(newError => {
+      //           errorFields.forEach(oldError => {
+      //             if (JSON.stringify(newError) === JSON.stringify(oldError)) {
+      //               repeat = false; // there is a repeat
+      //             }
+      //           });
+      //         });
+
+      //         if (repeat !== false) {
+      //           setErrorFields([...errorFields, ...errors]);
+      //         }
+      //   }
     }
   };
 
