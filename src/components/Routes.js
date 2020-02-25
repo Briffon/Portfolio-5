@@ -6,6 +6,7 @@ import Teams from "./pages/Teams";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
 import New from "./pages/New";
+import Analyze from "./pages/Analyze";
 
 const Routes = () => {
   return (
@@ -28,6 +29,9 @@ const Routes = () => {
       </Switch>
       <Switch>
         <Route exact path="/About" component={About} />
+      </Switch>
+      <Switch>
+        <Route exact path="/Analyze" component={Analyze} />
       </Switch>
     </>
   );

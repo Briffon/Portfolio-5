@@ -1,0 +1,36 @@
+.resources-content {
+  display: flex;
+  flex-direction: column;
+
+  h2 {
+    text-transform: uppercase;
+    font-family: $lucky;
+  }
+}
+
+a[href="http://localhost:3000/resources"] + .makeStyles-content-7{
+  padding: 0px !important;
+  color: red;
+}
+
+.table-of-contents-container {
+  display: flex;
+  flex: row;
+  border: solid;
+  margin: 0 !important;
+}
+
+.desktop-table {
+  display: none;
+}
+
+.mobile-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @extend %center;
+  background-color: $button;
+  border: none;
+  width: 20%;
+  border: solid;
+}
