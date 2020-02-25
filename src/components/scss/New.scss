@@ -94,6 +94,10 @@
   box-shadow: -2px 2px 0px 0px rgba(63, 59, 59, 0.6);
 }
 
+.disabled{
+  opacity: .6;
+}
+
 @media (min-width: 425px) {
   .pokemon-container {
   }
