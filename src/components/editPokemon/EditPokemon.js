@@ -41,6 +41,11 @@ const EditPokemon = props => {
           onChange={props.onChangeMoves}
         />
         ><button type="submit">Submit</button>
+        <img
+          onClick={props.delte}
+          src={require("../../Icons/delete.png")}
+          alt="delete icon"
+        />
       </form>
     </div>
   );

@@ -6,312 +6,14 @@ import Pokedex from "../pokedex/Pokedex";
 import PokeDisplay from "../pokeDisplay/PokeDisplay";
 import ModifyPokemon from "../modifyPokemon/ModifyPokemon";
 import EditPokemon from "../editPokemon/EditPokemon";
+import SubmitTeam from "../submitTeam/SubmitTeam";
 
 function New() {
-  const [Tname, setTname] = useState("Blazin");
+  const [teamName, setTeamName] = useState("Blazin");
   const [showInitModal, setInitModal] = useState("closed");
   const [errorFields, setErrorFields] = useState([]);
   const [team, setTeam] = useState([
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    },
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    },
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    },
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    },
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    },
-    {
-      pokemon: {
-        name: "charizard",
-        moves: [
-          {
-            move: {
-              name: "beam"
-            }
-          },
-          {
-            move: {
-              name: "beam"
-            }
-          }
-        ],
-        abilities: [
-          {
-            ability: {
-              name: "solar-power",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          },
-          {
-            ability: {
-              name: "solar",
-              url: "https://pokeapi.co/api/v2/ability/94/"
-            }
-          }
-        ]
-      },
-      ability: {
-        ability: {
-          name: "solar-power",
-          url: "https://pokeapi.co/api/v2/ability/94/"
-        }
-      },
-      id: 0,
-      img:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-      types: [
-        { type: { name: "flying", url: "https://pokeapi.co/api/v2/type/3" } },
-        { type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }
-      ],
-      moves: [
-        { name: "fire-punch", id: 1 },
-        { name: "thunder-punch", id: 2 },
-        { name: "submission", id: 3 },
-        { name: "ember", id: 4 }
-      ]
-    }
+   
   ]);
   const [count, setCount] = useState(team.length);
   const [showAddModal, setShowAddModal] = useState("closed");
@@ -330,10 +32,12 @@ function New() {
   const [id, setId] = useState(count);
   const [currentTypes, setCurrentTypes] = useState([]);
   const [showEditModal, setShowEditModal] = useState("closed");
+  const [submitModal, setSubmitModal] = useState("open");
+  const [analyze, setAnalyze] = useState(false);
 
   const submitTeamName = e => {
     e.preventDefault();
-    if (Tname !== "") {
+    if (teamName !== "") {
       setInitModal("closed");
     } else {
       let valid = false;
@@ -543,6 +247,62 @@ function New() {
     setShowEditModal("closed");
   };
 
+  const deletePokemon = e => {
+    e.preventDefault();
+    console.log(team);
+    let index = team.indexOf(currentPokemon); //get index of selected pokemon
+    let mon = team.slice(index, 1); // take out the selcted
+    console.log(mon);
+    let tempTeam = team.filter(poke => poke !== mon[0]);
+    setTeam(tempTeam);
+    setCount(tempTeam.length);
+    setShowEditModal("closed");
+  };
+
+  const submitTeam = e => {
+    e.preventDefault();
+    if (team.length === 6) {
+      setSubmitModal("open");
+    }
+    console.log(team);
+  };
+
+  const returnTo = e => {
+    e.preventDefault();
+    setSubmitModal("closed");
+  };
+
+  const analyzeTeam = e => {
+    e.preventDefault();
+    let teamString = JSON.stringify(team);
+    localStorage.setItem("team", teamString);
+
+    if (localStorage.getItem("teams")) {
+      let temp = JSON.parse(localStorage.getItem("teams"));
+      let valid = true;
+      temp.teams.forEach(oldTeam => {
+        if (JSON.stringify(oldTeam.team) === JSON.stringify(team)) {
+          valid = false;
+        }
+      });
+
+      if (valid === true) {
+        console.log("pushed");
+        temp.teams.push({ team });
+        let newTeam = JSON.stringify(temp);
+        localStorage.setItem("teams", newTeam);
+        console.log(temp);
+        //take to new page
+      } else {
+        console.log("dup");
+      }
+    } else {
+      let tempTemp = { teams: [{ team }] };
+      localStorage.setItem("teams", JSON.stringify(tempTemp));
+      console.log(tempTemp);
+      //take to new page
+    }
+  };
   return (
     <div className={`builder-container`}>
       <Modal
@@ -564,7 +324,7 @@ function New() {
               label="Team Name"
               name="name"
               type="text"
-              onChange={e => setTname(e.target.value)}
+              onChange={e => setTeamName(e.target.value)}
             />
           </div>
         }
@@ -593,13 +353,30 @@ function New() {
             onChangeAbility={editAbility}
             onChangeMoves={editMoves}
             submit={submitEdit}
+            delte={deletePokemon}
           />
         }
       ></Modal>
-      <h2>{Tname}</h2>
+
+      <Modal
+        class={`submit-team-modal ${submitModal}`}
+        content={
+          <SubmitTeam
+            analyze={analyzeTeam}
+            edit={returnTo}
+            teamName={teamName}
+            team={team}
+          />
+        }
+      />
+      <h2>{teamName}</h2>
 
       <div className="pokemon-container">
-        <AddPokemon click={addPokemonClick} count={count} />
+        <AddPokemon
+          submitTeam={submitTeam}
+          click={addPokemonClick}
+          count={count}
+        />
         {team !== []
           ? team.map((mon, index) => {
               console.log(mon);
