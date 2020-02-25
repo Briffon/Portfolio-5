@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,6 +15,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { NavLink } from "react-router-dom";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -56,6 +57,8 @@ function Header(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [active, setActive] = useState();
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -127,7 +130,7 @@ function Header(props) {
           (text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{links(text, index)}</ListItemIcon>
-              <NavLink className="link" to={`/${text.toLowerCase()}`}>
+              <NavLink onClick={props.click ? (e) => props.click(e, text) : null} activeClassName="selected" activeStyle={{ color: 'red' }} className="link" to={`/${text.toLowerCase()}`}>
                 <ListItemText primary={text} />
               </NavLink>
             </ListItem>
@@ -152,7 +155,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Pokemon Advisor
+            {props.page !== 'null' ? props.page : 'Home'}
           </Typography>
         </Toolbar>
       </AppBar>

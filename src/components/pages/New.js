@@ -12,9 +12,7 @@ function New() {
   const [teamName, setTeamName] = useState("Blazin");
   const [showInitModal, setInitModal] = useState("closed");
   const [errorFields, setErrorFields] = useState([]);
-  const [team, setTeam] = useState([
-   
-  ]);
+  const [team, setTeam] = useState([]);
   const [count, setCount] = useState(team.length);
   const [showAddModal, setShowAddModal] = useState("closed");
   const [modifyModal, setModifyModal] = useState("closed");
@@ -207,7 +205,12 @@ function New() {
         img: currentPokemonImg,
         types: currentTypes
       };
-      setTeam([...team, pokemon]);
+      console.log(team)
+      if (team.team) {
+        setTeam({ name: teamName, team: [...team.team, pokemon] });
+      } else {
+        setTeam({ name: teamName, team: [pokemon] })
+      }
       e.target.reset();
       setModifyModal("closed");
     }
@@ -254,14 +257,14 @@ function New() {
     let mon = team.slice(index, 1); // take out the selcted
     console.log(mon);
     let tempTeam = team.filter(poke => poke !== mon[0]);
-    setTeam(tempTeam);
+    setTeam({ name: teamName, team: [...tempTeam] });
     setCount(tempTeam.length);
     setShowEditModal("closed");
   };
 
   const submitTeam = e => {
     e.preventDefault();
-    if (team.length === 6) {
+    if (team.team.length === 6) {
       setSubmitModal("open");
     }
     console.log(team);
@@ -377,19 +380,33 @@ function New() {
           click={addPokemonClick}
           count={count}
         />
-        {team !== []
-          ? team.map((mon, index) => {
-              console.log(mon);
-              return (
-                <PokeDisplay
-                  id={index}
-                  img={mon.img}
-                  edit={edit}
-                  pokemon={mon}
-                  key={index}
-                />
-              );
-            })
+        {console.log(team)}
+        {/*{team.team !== [] && team.team
+        //   ? team.team.map((mon, index) => {
+        //     console.log(mon);
+        //     return (
+        //       <PokeDisplay
+        //         id={index}
+        //         img={mon.img}
+        //         edit={edit}
+        //         pokemon={mon}
+        //       />
+        //     );
+        //   })
+        //   : null}*/}
+        {team.team && team.team !== []
+          ? team.team.map((mon, index) => {
+            console.log(mon);
+            return (
+              <PokeDisplay
+                id={index}
+                img={mon.img}
+                edit={edit}
+                pokemon={mon}
+                key={index}
+              />
+            );
+          })
           : null}
       </div>
     </div>

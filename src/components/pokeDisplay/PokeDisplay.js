@@ -89,6 +89,7 @@ const PokeDisplay = props => {
         color: "#FFFFFF"
       }}
     >
+    {console.log(props.pokemon)}
       <div className="poke-display-head">
         <img src={props.img} alt={props.pokemon.pokemon.name} />
         <p>{props.pokemon.pokemon.name}</p>

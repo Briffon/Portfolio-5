@@ -16,7 +16,7 @@ function Home() {
           src={require("../../art/mobilehero.png")}
           alt="hero background"
         />
-        <NavLink to="/Builder" className="cta">
+        <NavLink to="/New" className="cta">
           Create a Team!
     </NavLink>
       </section>
