@@ -145,6 +145,10 @@ class Pokedex extends Component {
 
   submitChange = e => {
     //get length of term, list of all pokemon, the search term and create an empty array
+    this.setState({
+      search: e.target.value
+    }
+    )
     let length = e.target.value.length;
     let allMons = this.state.allPokemon;
     let term = e.target.value;
@@ -203,6 +207,17 @@ class Pokedex extends Component {
     });
   };
 
+  submitSearch = e => {
+    e.preventDefault();
+    console.log(this.state.search)
+
+
+    this.setState({
+      selectedPokemon: this.state.search
+    }
+    )
+  }
+
   render(props) {
     return (
       <div className="gameboy">
@@ -223,19 +238,19 @@ class Pokedex extends Component {
           <div className="dex">
             {this.state.showcase.length === 10
               ? this.state.showcase.map((mon, index) => {
-                  let data = JSON.stringify(mon);
-                  return (
-                    <PokePreview
-                      key={index}
-                      item={data}
-                      selected={this.props.selected}
-                      name={
-                        mon.name.charAt(0).toUpperCase() + mon.name.slice(1)
-                      }
-                      url={mon.url}
-                    />
-                  );
-                })
+                let data = JSON.stringify(mon);
+                return (
+                  <PokePreview
+                    key={index}
+                    item={data}
+                    selected={this.props.selected}
+                    name={
+                      mon.name.charAt(0).toUpperCase() + mon.name.slice(1)
+                    }
+                    url={mon.url}
+                  />
+                );
+              })
               : null}
           </div>
           <GalleryButtons next={this.nextMon} previous={this.previousMon} />
