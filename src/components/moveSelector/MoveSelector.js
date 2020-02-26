@@ -3,15 +3,17 @@ import React from "react";
 const MoveSelector = props => {
   return (
     <select data-id={props.id} onChange={props.onChange}>
-      {console.log(props.selectedMoves)}
       {props.selectedMoves
         ? props.selectedMoves.map((mov, index) => {
-            if (index+1 === props.id) {
-              return (
-                <option key={index} value={mov.name}>
-                  {mov.name}
-                </option>
-              );
+            if (index + 1 === props.id) {
+              if (mov.disabled === true) {
+              } else {
+                return (
+                  <option key={index} value={mov.name}>
+                    {mov.name}
+                  </option>
+                );
+              }
             }
           })
         : null}
@@ -22,6 +24,11 @@ const MoveSelector = props => {
             props.selectedMoves.forEach(mov => {
               if (move.move.name !== mov.name) {
                 valid = true;
+                return (
+                  <option key={index} value={move.move.name} disabled>
+                    {move.move.name}
+                  </option>
+                );
               }
             });
 
@@ -31,6 +38,7 @@ const MoveSelector = props => {
                   {move.move.name}
                 </option>
               );
+            } else {
             }
           })
         : null}

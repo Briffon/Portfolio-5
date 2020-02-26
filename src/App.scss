@@ -10,6 +10,7 @@
 @import "./components/scss/ModifyModal.scss";
 @import "./components/scss/SubmitTeam.scss";
 @import "./components/scss/TableOfContetns.scss";
+@import "./components/scss/SelectMoves.scss";
 
 .App {
   text-align: center;
@@ -86,4 +87,8 @@ input {
 
 .html-content {
   width: 100%;
+}
+
+.makeStyles-content-7 {
+  padding: 0rem !important;
 }

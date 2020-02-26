@@ -6,8 +6,7 @@ const EditPokemon = props => {
     <div>
       <img src={props.pokemon.img} alt="" />
       {props.pokemon.pokemon ? console.log(props.pokemon.pokemon.moves) : null}
-      {console.log(props.pokemon)}
-      {console.log(props.selectedMoves)}
+
       <form onSubmit={props.submit}>
         <AbilitySelector
           selectedAbility={props.pokemon.pokemon ? props.pokemon.ability : null}
@@ -42,7 +41,7 @@ const EditPokemon = props => {
         />
         ><button type="submit">Submit</button>
         <img
-          onClick={props.delte}
+          onClick={props.delete}
           src={require("../../Icons/delete.png")}
           alt="delete icon"
         />

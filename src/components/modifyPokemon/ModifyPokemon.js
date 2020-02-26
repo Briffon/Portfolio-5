@@ -8,6 +8,7 @@ function ModifyPokemon(props) {
           <img src={props.img} alt={props.pokemon.name} />
           <p>{props.pokemon.name}</p>
         </div>
+
         <div className="form-input">
           <label htmlFor="abil" value="Ability">
             Ability
@@ -30,27 +31,27 @@ function ModifyPokemon(props) {
             Move 1
           </label>
           <select name="move1" data-moveid="1" onChange={props.moveChange}>
+            {console.log(props.selectedMoves)}
+            {console.log(props.movePool)}
             {props.movePool
               ? props.movePool.map((move, index) => {
-                  return (
-                    <option key={index} value={move.move.name}>
-                      {move.move.name}
-                    </option>
-                  );
+                    console.log(move);
+                  if (move.move.disabled === true) {
+                    return (
+                      <option key={index} value={move.move.name} disabled>
+                        {move.move.name}
+                      </option>
+                    );
+                  } else {
+                    return (
+                      <option key={index} value={move.move.name}>
+                        {move.move.name}
+                      </option>
+                    );
+                  }
                 })
               : null}
           </select>
-          {props.errors.length > 0
-            ? props.errors.map((error, index) => {
-                if (parseInt(error.where) === 1) {
-                  return (
-                    <div key={index}>
-                      <p>{error.msg}</p>
-                    </div>
-                  );
-                }
-              })
-            : null}
         </div>
 
         <div className="form-input">
