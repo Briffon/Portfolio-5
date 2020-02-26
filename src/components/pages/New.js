@@ -13,7 +13,7 @@ function New() {
   const [teamName, setTeamName] = useState("");
   const [showInitModal, setInitModal] = useState("closed");
   const [errorFields, setErrorFields] = useState([]);
-  const [team, setTeam] = useState({});
+  const [team, setTeam] = useState([]);
   //   name:teamName,
   //   team: [
   //     {
@@ -384,7 +384,7 @@ function New() {
   const edit = e => {
     e.preventDefault();
     let id = e.target.parentElement.dataset.pokemon;
-    let data = team.team[id];
+    let data = team[id];
 
     setCurrentPokemon(data);
     setShowEditModal("open");
@@ -406,31 +406,35 @@ function New() {
     let val = e.target.value;
     let id = e.target.dataset.id;
 
-    currentPokemon.moves.forEach(move => {
+    selectedMoves.forEach(move => {
       if (move.name === val) {
         valid = false;
-        //throw error here
+        //display error here
       }
     });
 
     if (valid === true) {
-      currentPokemon.moves[id - 1] = { name: val, id: parseInt(id) };
+      let temp = selectedMoves;
+      temp[id - 1] = { name: val, id: parseInt(id) - 1 };
+      setSelectedMoves(temp);
     }
   };
 
   const submitEdit = e => {
     e.preventDefault();
     setShowEditModal("closed");
+
+    //set new moves 
   };
 
   const deletePokemon = async e => {
     e.preventDefault();
-    let index = team.team.indexOf(currentPokemon); //get index of selected pokemon
-    let mon = team.team.slice(index, 1); // take out the selcted
-    let tempTeam = team.team.filter(poke => poke !== mon[0]);
-    tempTeam = { name: teamName, team: tempTeam };
+    let index = team.indexOf(currentPokemon); //get index of selected pokemon
+    let mon = team.slice(index, 1); // take out the selected
+    let tempTeam = team.filter(poke => poke !== mon[0]);
+    tempTeam = [...tempTeam];
     setTeam(tempTeam);
-    setCount(tempTeam.team.length);
+    setCount(tempTeam.length);
     setShowEditModal("closed");
   };
 
@@ -483,10 +487,21 @@ function New() {
   const moveSelection = e => {
     e.preventDefault();
     let parsed = JSON.parse(e.target.dataset.info);
+    let valid = true
     console.log(parsed);
     if (!(selectedMoves.length >= 4)) {
-      console.log("test");
-      setSelectedMoves([...selectedMoves, parsed.move.name]);
+      selectedMoves.forEach(move => {
+        if (move.name === parsed.move.name) {
+          console.log(move, parsed.move.name)
+          valid = false;
+        }
+      })
+
+      if (valid === true) {
+        setSelectedMoves([...selectedMoves, { name: parsed.move.name, id: selectedMoves.length }]);
+      } else {
+        //display error
+      }
     }
     console.log(selectedMoves);
   };
@@ -495,7 +510,22 @@ function New() {
     e.preventDefault();
 
     if (selectedMoves.length === 4) {
+      //add pokemon to team
       setModifyModal("closed");
+
+      if (!(team.length >= 6)) {
+
+        let pokemon = {
+          pokemon: currentPokemon,
+          ability: ability,
+          moves: selectedMoves,
+          id: id,
+          img: currentPokemonImg,
+          types: currentTypes
+        };
+        console.log(team)
+        setTeam([...team, pokemon])
+      }
     }
   };
 
@@ -513,15 +543,21 @@ function New() {
             return res.json();
           } else {
             throw Error;
+            //display error
           }
         })
         .then(json => {
           if (!(selectedMoves.length >= 4)) {
-            setSelectedMoves([...selectedMoves, json.name]);
+
+            selectedMoves.forEach(move => {
+              console.log(move)
+            })
+            setSelectedMoves([...selectedMoves, { name: json.name, id: selectedMoves.length }]);
           }
         });
     } catch (e) {
       console.log(e);
+      //display error
     }
   };
 
@@ -600,18 +636,18 @@ function New() {
           click={addPokemonClick}
           count={count}
         />
-        {team.team && team.team !== []
-          ? team.team.map((mon, index) => {
-              return (
-                <PokeDisplay
-                  id={index}
-                  img={mon.img}
-                  edit={edit}
-                  pokemon={mon}
-                  key={index}
-                />
-              );
-            })
+        {team && team !== []
+          ? team.map((mon, index) => {
+            return (
+              <PokeDisplay
+                id={index}
+                img={mon.img}
+                edit={edit}
+                pokemon={mon}
+                key={index}
+              />
+            );
+          })
           : null}
       </div>
     </div>
