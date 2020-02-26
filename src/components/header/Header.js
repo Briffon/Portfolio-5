@@ -130,7 +130,7 @@ function Header(props) {
           (text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{links(text, index)}</ListItemIcon>
-              <NavLink onClick={props.click ? (e) => props.click(e, text) : null} activeClassName="selected" activeStyle={{ color: 'red' }} className="link" to={`/${text.toLowerCase()}`}>
+              <NavLink onClick={props.click ? (e) => props.click(e, text) : null} className="link" to={`/${text.toLowerCase()}`}>
                 <ListItemText primary={text} />
               </NavLink>
             </ListItem>

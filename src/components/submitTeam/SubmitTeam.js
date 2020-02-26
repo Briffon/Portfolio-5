@@ -25,22 +25,22 @@ const SubmitTeam = props => {
         {console.log(props.team)}
         {props.team.team && props.team.team !== []
           ? props.team.team.map((mon, index) => {
-              return (
-                <div key={index} className="submit-pokemon">
-                  <img src={mon.img} alt={mon.pokemon.name} />
-                  <div className="type-container">
-                    {mon.types.map((type, index) => {
-                      return <TypeBubble key={index} type={type.type.name} />;
-                    })}
-                  </div>
+            return (
+              <div key={index} className="submit-pokemon">
+                <img src={mon.img} alt={mon.pokemon.name} />
+                <div className="type-container">
+                  {mon.types.map((type, index) => {
+                    return <TypeBubble key={index} type={type.type.name} />;
+                  })}
                 </div>
-              );
-            })
+              </div>
+            );
+          })
           : null}
       </div>
       <div className="submit-team-mods">
         <button onClick={props.edit}>Edit</button>
-        <NavLink to="/Analyze" onClick={props.analyze}>
+        <NavLink to="/Analyze" >
           Analyze
         </NavLink>
         <button onClick={props.finish}>Finish</button>
