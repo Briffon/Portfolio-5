@@ -19,24 +19,33 @@ function Teams() {
     e.preventDefault();
   };
   return (
-    <div>
+    <div className="team-page-container">
       {console.log(teams)}
       {teams && teams.teams !== []
         ? teams.map((team, index) => {
             return (
-              <div key={index} data-pokemon={JSON.stringify(team)}>
+              <div
+                className="team-container"
+                key={index}
+                data-pokemon={JSON.stringify(team)}
+              >
                 <h2>{team.team.name}</h2>
-                {team.team.team.map((mon, index) => {
-                  console.log(mon);
-                  return (
-                    <div key={index}>
-                      <img src={mon.img} alt={mon.pokemon.name} />
-                      <p>{mon.pokemon.name}</p>
-                    </div>
-                  );
-                })}
-                <button onClick={editTeam}>Edit</button>
-                <button onClick={deleteTeam}>Delete</button>
+                <div className="oof">
+                  <div className="team-display">
+                    {team.team.team.map((mon, index) => {
+                      console.log(mon);
+                      return (
+                        <div className="team-poke-container" key={index}>
+                          <img src={mon.img} alt={mon.pokemon.name} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="team-buttons">
+                    <button onClick={editTeam}>Edit</button>
+                    <button onClick={deleteTeam}>Delete</button>
+                  </div>
+                </div>
               </div>
             );
           })

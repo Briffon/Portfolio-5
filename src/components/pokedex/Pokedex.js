@@ -17,7 +17,7 @@ class Pokedex extends Component {
     suggestedPokemon: [],
     showSuggestion: "closed",
     selectedPokemon: [],
-    isRunning: false
+    isRunning: false 
   };
 
   async componentDidMount() {
@@ -167,7 +167,7 @@ class Pokedex extends Component {
       //make a temporary array
       let newArr = [];
 
-      //look through old array skipping dupplicates and adding to the temp array, if state is empty set the array
+      //look through old array skipping duplicates and adding to the temp array, if state is empty set the array
       suggestions.forEach(newMon => {
         if (this.state.suggestions !== []) {
           this.state.suggestions.forEach(oldMon => {

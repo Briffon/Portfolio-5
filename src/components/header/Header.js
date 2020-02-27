@@ -59,7 +59,6 @@ function Header(props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [active, setActive] = useState();
 
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -126,11 +125,15 @@ function Header(props) {
       </div>
       <Divider />
       <List>
-        {["Home", "New", "Teams", "Resources", "About"].map(
+        {["Home", "Builder", "Teams", "Resources", "About"].map(
           (text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{links(text, index)}</ListItemIcon>
-              <NavLink onClick={props.click ? (e) => props.click(e, text) : null} className="link" to={`/${text.toLowerCase()}`}>
+              <NavLink
+                onClick={props.click ? e => props.click(e, text) : null}
+                className="link"
+                to={`/${text.toLowerCase()}`}
+              >
                 <ListItemText primary={text} />
               </NavLink>
             </ListItem>
@@ -155,7 +158,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {props.page !== 'null' ? props.page : 'Home'}
+            {props.page !== "null" ? props.page : "Home"}
           </Typography>
         </Toolbar>
       </AppBar>

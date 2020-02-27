@@ -2,7 +2,7 @@ import React from "react";
 
 const Modal = props => {
   return (
-    <div className={props.class} style={styles.container}>
+    <div className={props.class} style={styles.container} onClick={props.click}>
       {props.content}
     </div>
   );

@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Teams from "./pages/Teams";
 import Resources from "./pages/Resources";
 import About from "./pages/About";
-import New from "./pages/New";
+import Builder from "./pages/Builder";
 import Analyze from "./pages/Analyze";
 
 const Routes = () => {
@@ -17,7 +17,7 @@ const Routes = () => {
         <Route exact path="/Home" component={Home} />
       </Switch>
       <Switch>
-        <Route exact path="/New" component={New} />
+        <Route exact path="/Builder" component={Builder} />
       </Switch>
       <Switch>
         <Route exact path="/Teams" component={Teams} />

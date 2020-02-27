@@ -1,22 +1,18 @@
 .resources-content {
   display: flex;
   flex-direction: column;
-
+  margin-top: 1rem;
+  align-items: center;
+  align-content: center;
   h2 {
     text-transform: uppercase;
     font-family: $lucky;
   }
 }
 
-a[href="http://localhost:3000/resources"] + .makeStyles-content-7{
-  padding: 0px !important;
-  color: red;
-}
-
 .table-of-contents-container {
   display: flex;
   flex: row;
-  border: solid;
   margin: 0 !important;
 }
 
@@ -27,10 +23,48 @@ a[href="http://localhost:3000/resources"] + .makeStyles-content-7{
 .mobile-table {
   display: flex;
   flex-direction: column;
-  align-items: center;
   @extend %center;
   background-color: $button;
   border: none;
-  width: 20%;
-  border: solid;
+  width: 50%;
+  margin-bottom: 1rem;
+}
+
+.starters {
+  width: 90%;
+}
+
+@media (min-width: 768px) {
+  .desktop-table {
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      font-size: 1.2em;
+      font-family: $lucky;
+      font-weight: 700;
+    }
+
+    li {
+      list-style: square;
+      margin-left: 1.5rem;
+    }
+  }
+
+  .table-of-contents-container {
+    flex-direction: column;
+    margin: 1rem !important;
+    margin-right: 2rem !important;
+  }
+
+  .starters {
+  }
+
+  .mobile-table {
+    display: none;
+  }
+
+  .resources-content {
+    flex-direction: row;
+  }
 }

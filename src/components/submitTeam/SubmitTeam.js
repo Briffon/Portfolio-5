@@ -23,7 +23,7 @@ const SubmitTeam = props => {
           })
           : null}*/}
         {console.log(props.team)}
-        {props.team.team && props.team.team !== []
+        {props.team && props.team.team !== []
           ? props.team.team.map((mon, index) => {
             return (
               <div key={index} className="submit-pokemon">
@@ -40,10 +40,9 @@ const SubmitTeam = props => {
       </div>
       <div className="submit-team-mods">
         <button onClick={props.edit}>Edit</button>
-        <NavLink to="/Analyze" >
+        <NavLink to="/Analyze" onClick={props.analyze} >
           Analyze
         </NavLink>
-        <button onClick={props.finish}>Finish</button>
       </div>
     </div>
   );

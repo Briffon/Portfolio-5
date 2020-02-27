@@ -3,8 +3,9 @@ import MoveSelector from "../moveSelector/MoveSelector";
 import AbilitySelector from "../abilitySelector/AbilitySelector";
 const EditPokemon = props => {
   return (
-    <div>
-      <img src={props.pokemon.img} alt="" />
+    <div className="edit-container">
+      {console.log(props.pokemon)}
+      <img src={props.pokemon ? props.pokemon.img : null} alt="" />
       {props.pokemon.pokemon ? console.log(props.pokemon.pokemon.moves) : null}
 
       <form onSubmit={props.submit}>
@@ -39,12 +40,19 @@ const EditPokemon = props => {
           id={4}
           onChange={props.onChangeMoves}
         />
-        ><button type="submit">Submit</button>
-        <img
-          onClick={props.delete}
-          src={require("../../Icons/delete.png")}
-          alt="delete icon"
-        />
+
+        <div className="edit-buttons">
+          <button type="submit"><img
+            src={require("../../Icons/18.png")}
+            alt="delete icon"
+          /></button>
+          <img
+            onClick={props.delete}
+            src={require("../../Icons/delete.png")}
+            alt="delete icon"
+          />
+          
+        </div>
       </form>
     </div>
   );
