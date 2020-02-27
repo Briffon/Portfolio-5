@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Teams from "./pages/Teams";
 import Resources from "./pages/Resources";
-import About from "./pages/About";
 import Builder from "./pages/Builder";
 import Analyze from "./pages/Analyze";
 
@@ -25,9 +24,6 @@ const Routes = () => {
 
       <Switch>
         <Route exact path="/Resources" component={Resources} />
-      </Switch>
-      <Switch>
-        <Route exact path="/About" component={About} />
       </Switch>
       <Switch>
         <Route exact path="/Analyze" component={Analyze} />
