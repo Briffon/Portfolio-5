@@ -1,19 +1,45 @@
-@media (max-width: 878px) {
-  .hero {
-    background: url("../../art/pokemonhero.png") no-repeat;
-    background-size: cover;
-    background-color: black;
-    height: 50%;
-    width: 50%;
-    position: absolute;
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+
+  img {
+    box-shadow: -2px 2px 0px 0px rgba(128, 128, 128, 0.8);
+    border-radius: 5px;
+    width: 95%;
   }
-  .desk-hero {
-    display: none;
+
+  h2 {
+    width: 90%;
+    text-align: center;
+    font-size: 1.5em;
   }
 }
 
+.about {
+  display: flex;
+  flex-direction: column;
+}
+
 .home-container {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cta {
+  text-decoration: none;
+  text-align: center;
+  background: $button;
+  margin: 1rem;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: -2px 2px 0px 0px rgba(128, 128, 128, 0.5);
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: $lucky;
 }
 
 .closed {
@@ -22,4 +48,46 @@
 
 .open {
   display: flex !important;
+}
+
+.info {
+  margin: 1rem;
+}
+
+@media (max-width: 710px) {
+  .desk-hero {
+    display: none;
+  }
+
+  .mobile-hero {
+    width: 95%;
+  }
+
+  .home-container h2 {
+    font-size: 1.4em;
+  }
+}
+
+@media (min-width: 710px) {
+  .mobile-hero {
+    display: none;
+  }
+
+  .about {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 425px) {
+  .home-container h2 {
+    font-size: 1.3em;
+  }
+
+  .mobile-hero {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+
 }

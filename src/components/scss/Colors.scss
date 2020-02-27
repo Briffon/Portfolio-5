@@ -1,8 +1,42 @@
 $primary: #73b9ff;
 $secondary: #342e37;
 $accent: #0f4d8c;
+$form: #d1faff;
+$heading: #2a2b2e;
+$input: #b8bac8;
+$button: #3f9fff;
 $lucky: "Luckiest Guy", cursive;
+$dex-button: #e2ebf2;
+$modal: #eff9f0;
+
 %center {
   margin-left: auto;
   margin-right: auto;
+}
+
+%button {
+  text-decoration: none;
+  text-align: center;
+  background: $button;
+  margin: 1rem;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: -2px 2px 0px 0px rgba(128, 128, 128, 0.5);
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: $lucky;
+  border: none;
+}
+
+@mixin input($width) {
+  width: $width;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  border: none;
+  background-color: $dex-button;
+  border-radius: 5px;
+  height: 30px;
+  box-shadow: 0px 0px 1px 1px rgba(128, 128, 128, 0.8);
+  position: relative;
 }

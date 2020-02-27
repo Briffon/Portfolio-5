@@ -1,0 +1,59 @@
+.modify-container {
+  background-color: #eff9f0;
+  width: 80%;
+  border-radius: 10px;
+  @extend %center;
+}
+
+.pokeForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem;
+
+  button {
+    border: none;
+    background-color: $button;
+    border-radius: 15px;
+    font-weight: 600;
+    width: 90%;
+    height: 25px;
+    text-align: center;
+    margin: 1rem;
+    text-transform: uppercase;
+    color: white;
+    box-shadow: -1px 1px 0px 0px rgba(128, 128, 128, 0.8);
+  }
+}
+
+.form-input {
+  margin: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  select {
+    height: 20px;
+    border: none;
+  }
+
+  label {
+    font-size: 1em;
+    text-align: right;
+    margin-right: 0.5rem;
+  }
+}
+
+.modify-header {
+  text-transform: uppercase;
+  font-family: $lucky;
+  color: #353535;
+  font-size: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 100px;
+  }
+}

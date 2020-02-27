@@ -1,15 +1,22 @@
-import React from 'react'
+import React from "react";
 
-export const GalleryButtons = props => {
-    return (
-        <div style={styles.container}>
-            <button onClick={props.previous}>></button>
-            <input onClick={props.next} type="button" value="<"></input>
-        </div>
-    )
-}
-
-const styles = {
-    container: {
-    }
+const GalleryButtons = props => {
+  return (
+    <div className="dex-button-container">
+      <input
+        className="dex-button"
+        onClick={props.next}
+        type="button"
+        value="<"
+      ></input>
+      <input
+        className="dex-button"
+        onClick={props.next}
+        type="button"
+        value=">"
+      ></input>
+    </div>
+  );
 };
+
+export default GalleryButtons;

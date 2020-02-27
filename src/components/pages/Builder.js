@@ -1,558 +1,415 @@
-import React, { Component } from "react";
-import Panel from "../panel/Panel";
-// import { Paper, Input } from "@material-ui/core";
-//make pokemon images same size
-import "./Builder.css";
-import { SearchBar } from "../searchBar/SearchBar";
-import { GalleryButtons } from "../galleryButtons/GalleryButtons";
+import React, { useState, useEffect } from "react";
 import { SingleForm } from "../singleForm/SingleForm";
 import Modal from "../modal/Modal";
-import PokePreview from "../pokePreview/PokePreview";
+import AddPokemon from "../addPokemon/AddPokemon";
+import Pokedex from "../pokedex/Pokedex";
+import PokeDisplay from "../pokeDisplay/PokeDisplay";
+import ModifyPokemon from "../modifyPokemon/ModifyPokemon";
+import EditPokemon from "../editPokemon/EditPokemon";
+import SubmitTeam from "../submitTeam/SubmitTeam";
+import TempSelector from "../tempSelector/TempSelector";
 
-class Builder extends Component {
-  state = {
-    found: "No Results",
-    foundItem: "No Results",
-    img: "https://i.ya-webdesign.com/images/pokemon-question-mark-png.png",
-    types: [{ type: { name: "???" } }],
-    abilities: [{ ability: { name: "???" } }],
-    moves: [{ move: { name: "???" } }],
-    name: "",
-    item: "",
-    showPokeSearch: "closed",
-    showItemSearch: "closed",
-    showcase: [],
-    itemList: [],
-    next: "",
-    previous: "",
-    nextItem: "",
-    previousItem: "",
-    selectedPokemon: "",
-    selectedAbility: '',
-    selectedMoves: [],
-    team: []
+function Builder() {
+  const [teamName, setTeamName] = useState("Test1");
+  const [showInitModal, setInitModal] = useState("closed");
+  const [errorFields, setErrorFields] = useState([]);
+  const [team, setTeam] = useState();
+  const [count, setCount] = useState(team ? team.team.length : 0);
+  const [showAddModal, setShowAddModal] = useState("closed");
+  const [modifyModal, setModifyModal] = useState("closed");
+  const [currentPokemon, setCurrentPokemon] = useState({});
+  const [currentPokemonImg, setCurrentPokemonImg] = useState("");
+  const [ability, setAbility] = useState();
+  const [movePool, setMovePool] = useState([]);
+  const [selectedMoves, setSelectedMoves] = useState([]);
+  const [disable, setDisable] = useState("active");
+  const [id, setId] = useState(count);
+  const [currentTypes, setCurrentTypes] = useState([]);
+  const [showEditModal, setShowEditModal] = useState("closed");
+  const [submitModal, setSubmitModal] = useState("closed");
+  const [analyze, setAnalyze] = useState(false);
+  const [moveTerm, setMoveTerm] = useState("");
+  const [currentTeam, setCurrentTeam] = useState({});
+
+  useEffect(() => {
+    if (localStorage.getItem("tempTeam")) {
+      let team = localStorage.getItem("tempTeam");
+      let parsed = JSON.parse(team);
+      console.log(parsed);
+      setTeam(parsed);
+      setCount(parsed.team.length);
+    }
+  }, []);
+
+  const submitTeamName = e => {
+    e.preventDefault();
+    if (teamName !== "") {
+      setInitModal("closed");
+    } else {
+      let valid = false;
+      errorFields.forEach(error => {
+        if (error.name === "Team Name") {
+          valid = true;
+        }
+      });
+      if (valid === false) {
+        setErrorFields([...errorFields, { name: "Team Name" }]);
+      }
+    }
   };
 
-  getInfo(url) {
+  const addPokemonClick = async e => {
+    e.preventDefault();
+    if (count >= 6) {
+      await setDisable("disabled");
+    }
+
+    if (disable === "active" && !(count >= 6)) {
+      setShowAddModal("open");
+    }
+  };
+
+  const closeDex = async e => {
+    e.preventDefault();
+    let data = JSON.parse(e.target.dataset.pokemon);
+    fetch("https://pokeapi.co/api/v2/pokemon/" + data.name)
+      .then(res => res.json())
+      .then(data => {
+        setCurrentPokemon(data);
+        setCurrentPokemonImg(data.sprites.front_default);
+        setMovePool([...data.moves]);
+        setAbility(data.abilities[0]);
+        setId(count);
+        setCurrentTypes(data.types);
+      });
+    await setCount(count + 1);
+    setShowAddModal("closed");
+    setModifyModal("open");
+    setSelectedMoves([]);
+  };
+
+  const edit = e => {
+    e.preventDefault();
+    let id = e.target.parentElement.dataset.pokemon;
+    let data = team.team[id];
+    console.log(data);
+    setCurrentPokemon(data);
+    setShowEditModal("open");
+  };
+
+  const editAbility = e => {
+    e.preventDefault();
+    let val = e.target.value;
+    let newAbil = {
+      name: val,
+      url: `https://pokeapi.co/api/v2/ability/` + val
+    };
+    currentPokemon.ability = newAbil;
+  };
+
+  const editMoves = e => {
+    e.preventDefault();
+    let valid = true;
+    let val = e.target.value;
+    let id = e.target.dataset.id;
+
+    selectedMoves.forEach(move => {
+      if (move.name === val) {
+        valid = false;
+        //display error here
+      }
+    });
+
+    if (valid === true) {
+      let temp = selectedMoves;
+      temp[id - 1] = { name: val, id: parseInt(id) - 1 };
+      setSelectedMoves(temp);
+    }
+  };
+
+  const submitEdit = e => {
+    e.preventDefault();
+    setShowEditModal("closed");
+
+    //set new moves
+  };
+
+  const deletePokemon = e => {
+    e.preventDefault();
+    let index = team.team.indexOf(currentPokemon); //get index of selected pokemon
+    console.log(index);
+    let mon = team.team.slice(index, 1); // take out the selected
+    console.log(mon);
+    let tempTeam = team.team.filter(poke => poke !== mon[0]);
+    console.log(tempTeam);
+    tempTeam = { name: teamName, team: [...tempTeam] };
+    console.log(tempTeam);
+    localStorage.setItem("tempTeam", JSON.stringify(tempTeam));
+    setTeam(tempTeam);
+    setCount(tempTeam.team.length);
+    setShowEditModal("closed");
+  };
+
+  const submitTeam = e => {
+    e.preventDefault();
+    if (team.team != undefined) {
+      if (team.team.length === 6) {
+        setSubmitModal("open");
+      }
+    }
+  };
+
+  const returnTo = e => {
+    e.preventDefault();
+    setSubmitModal("closed");
+  };
+
+  const analyzeTeam = e => {
+    let teamString = JSON.stringify(team);
+    localStorage.setItem("team", teamString);
+
+    if (localStorage.getItem("teams")) {
+      let temp = JSON.parse(localStorage.getItem("teams"));
+      let valid = true;
+      temp.teams.forEach(oldTeam => {
+        if (JSON.stringify(oldTeam.team) === JSON.stringify(team)) {
+          valid = false;
+        }
+      });
+
+      if (valid === true) {
+        temp.teams.push({ team });
+        let newTeam = JSON.stringify(temp);
+        localStorage.setItem("teams", newTeam);
+        //take to new page
+        //cleat temp teams from storage
+        if (localStorage.getItem("tempTeam")) {
+          localStorage.removeItem("tempTeam");
+        }
+      } else {
+        console.log("dup");
+        localStorage.removeItem("tempTeam");
+      }
+    } else {
+      console.log("test");
+      let tempTemp = { teams: [{ name: teamName, team: team }] };
+      localStorage.setItem("teams", JSON.stringify(tempTemp));
+      setTeam([]);
+      localStorage.removeItem("tempTeam");
+      //take to new page
+    }
+  };
+
+  const selectedAbility = e => {
+    e.preventDefault();
+    setAbility(e.target.value);
+  };
+
+  const moveSelection = e => {
+    e.preventDefault();
+    let parsed = JSON.parse(e.target.dataset.info);
+    let valid = true;
+    console.log(parsed);
+    if (!(selectedMoves.length >= 4)) {
+      selectedMoves.forEach(move => {
+        if (move.name === parsed.move.name) {
+          console.log(move, parsed.move.name);
+          valid = false;
+        }
+      });
+
+      if (valid === true) {
+        setSelectedMoves([
+          ...selectedMoves,
+          { name: parsed.move.name, id: selectedMoves.length }
+        ]);
+      } else {
+        //display error
+      }
+    }
+    console.log(selectedMoves);
+  };
+
+  const submitMods = e => {
+    e.preventDefault();
+
+    if (selectedMoves.length === 4) {
+      //add pokemon to team
+      setModifyModal("closed");
+
+      console.log(team);
+      if (team !== undefined) {
+        if (!(team.team.length >= 6)) {
+          let pokemon = {
+            pokemon: currentPokemon,
+            ability: ability,
+            moves: selectedMoves,
+            id: id,
+            img: currentPokemonImg,
+            types: currentTypes
+          };
+          console.log(team);
+          setTeam({ name: teamName, team: [...team.team, pokemon] });
+
+          //save team incase user adds a pokemon
+          //set local storage = team pokemon added
+          localStorage.setItem(
+            "tempTeam",
+            JSON.stringify({ name: teamName, team: [...team.team, pokemon] })
+          );
+
+          //when a team is submitted clear the storage
+        }
+      } else {
+        let pokemon = {
+          pokemon: currentPokemon,
+          ability: ability,
+          moves: selectedMoves,
+          id: id,
+          img: currentPokemonImg,
+          types: currentTypes
+        };
+        console.log(team);
+        setTeam({ name: teamName, team: [pokemon] });
+        //set local storage = team pokemon added
+        localStorage.setItem(
+          "tempTeam",
+          JSON.stringify({ name: teamName, team: [pokemon] })
+        );
+      }
+    }
+  };
+
+  const onChangeMove = e => {
+    setMoveTerm(e.target.value);
+  };
+
+  const submitTerm = e => {
+    e.preventDefault();
+
     try {
-      return fetch(url)
+      fetch("https://pokeapi.co/api/v2/move/" + moveTerm)
         .then(res => {
           if (res.ok) {
             return res.json();
           } else {
-            return "error";
+            throw Error;
+            //display error
           }
         })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async componentDidMount() {
-    await this.getInfo("https://pokeapi.co/api/v2/item/?limit=6").then(data => {
-      let items = data.results;
-      if (data.previous) {
-        this.setState({ previousItem: data.previous });
-      }
-
-      if (data.next) {
-        this.setState({ nextItem: data.next });
-      }
-
-      items.forEach(item => {
-        this.getInfo(item.url).then(json => {
-          this.setState({
-            itemList: [
-              ...this.state.itemList,
-              { name: json.name, img: json.sprites.default }
-            ]
-          });
-        });
-      });
-    });
-
-    await this.getInfo("https://pokeapi.co/api/v2/pokemon/?limit=9").then(
-      data => {
-        let pokemon = data.results;
-        this.setState({ next: data.next, previous: data.previous });
-        pokemon.forEach(mon => {
-          this.getInfo(mon.url).then(json => {
-            this.setState({
-              showcase: [
-                ...this.state.showcase,
-                { name: json.name, url: json.sprites.front_default }
-              ]
+        .then(json => {
+          if (!(selectedMoves.length >= 4)) {
+            selectedMoves.forEach(move => {
+              console.log(move);
             });
-          });
-        });
-      }
-    );
-  }
-
-
-
-  selectedMove = e => {
-    e.preventDefault();
-    let id = e.target.dataset.order;
-    let move = e.target.value;
-    let valid = false;
-    console.log(id, move)
-    switch (id) {
-      case '1':
-        console.log('set')
-        let items = [...this.state.selectedMoves];
-        let item = { ...items[0] };
-        item.name = move;
-        items[0] = item;
-        this.setState({ selectedMoves: items });
-        break;
-      case '2':
-        this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
-          if (mov.name === move) {
-            console.log('err')
-            valid = false;
-          } else {
-            valid = true;
+            setSelectedMoves([
+              ...selectedMoves,
+              { name: json.name, id: selectedMoves.length }
+            ]);
           }
-        })
-        if (valid === true) {
-          console.log('true')
-          let items = [...this.state.selectedMoves];
-          let item = { ...items[1] };
-          item.name = move;
-          items[1] = item;
-          this.setState({ selectedMoves: items });
+        });
+    } catch (e) {
+      console.log(e);
+      //display error
+    }
+  };
+
+  //check for dup moves and set current pokemon
+  return (
+    <div className={`builder-container`}>
+      <Modal
+      click={() => console.log("test")}
+        class={`modal-dex ` + showAddModal}
+        content={
+          <div>
+            <Pokedex selected={closeDex} close={closeDex} />
+          </div>
         }
-
-        break;
-      case '3':
-        this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
-          if (mov.name === move) {
-            console.log('err')
-            valid = false;
-          } else {
-            valid = true;
-          }
-        })
-        if (valid === true) {
-          console.log('true')
-          let items = [...this.state.selectedMoves];
-          let item = { ...items[2] };
-          item.name = move;
-          items[2] = item;
-          this.setState({ selectedMoves: items });
+      />
+      <Modal
+        class={`modal-team-name ` + showInitModal}
+        content={
+          <div className={`team-name-container`}>
+            <SingleForm
+              submit={submitTeamName}
+              button={<button type="submit">Confirm</button>}
+              placeholder="Enter name"
+              label="Team Name"
+              name="name"
+              type="text"
+              onChange={e => setTeamName(e.target.value)}
+            />
+          </div>
         }
-        break;
-      case '4':
-        this.state.selectedMoves.forEach(mov => {
-          console.log(mov)
-          if (mov.name === move) {
-            console.log('err')
-            valid = false;
-          } else {
-            valid = true;
-          }
-        })
-        if (valid === true) {
-          console.log('true')
-          let items = [...this.state.selectedMoves];
-          let item = { ...items[3] };
-          item.name = move;
-          items[3] = item;
-          this.setState({ selectedMoves: items });
-        }
-        break;
-      default:
-        break
-    }
-  }
-
-  onSubmitPokemon = e => {
-    e.preventDefault();
-    let pokemon = this.state.found;
-    let abil = this.state.selectedAbility;
-    let item = this.state.foundItem;
-    let moves = this.state.selectedMoves;
-    let newPokemon = { name: pokemon, abil: abil, item: item, moves: moves }
-    this.setState({
-      selectedPokemon: [...this.state.selectedPokemon, newPokemon]
-    })
-    console.log(this.state.selectedPokemon)
-
-  };
-
-  onSubmitItem = e => {
-    e.preventDefault();
-    let item = this.state.item;
-    if (item.includes(" ")) {
-      item = item.replace(/ /g, "-");
-    }
-    this.getInfo(`https://pokeapi.co/api/v2/item/${item}`).then(json => {
-      console.log("json");
-      console.log(json);
-      if (json === "error" || json.count) {
-        console.log("error test true");
-        this.setState({ foundItem: "No Item Found" });
-      } else {
-        this.setState({ foundItem: json.name, showItemSearch: 'closed' });
-      }
-      console.log(this.state.foundItem)
-    });
-  };
-
-  onSubmitName = e => {
-    e.preventDefault();
-    this.getInfo(
-      `https://pokeapi.co/api/v2/pokemon/${this.state.name.toLowerCase()}`
-    ).then(json => {
-      if (json === "error" || json.count) {
-        this.setState({
-          found: "No Pokemon Found",
-          img:
-            "https://i.ya-webdesign.com/images/pokemon-question-mark-png.png",
-          types: [{ type: { name: "???" } }],
-          abilities: [{ ability: { name: "???" } }],
-          moves: [{ move: { name: "???" } }],
-        });
-      } else {
-        this.setState({
-          found: json.name,
-          img: json.sprites.front_default,
-          types: json.types,
-          abilities: json.abilities,
-          moves: json.moves,
-          showPokeSearch: "closed",
-          selectedAbility: json.abilities[0]
-        });
-      }
-    });
-  };
-
-  openModal = e => {
-    e.preventDefault();
-    this.setState({ showPokeSearch: "open" });
-  };
-
-  onChange = e => {
-    e.preventDefault();
-    let x = e.target.name;
-    switch (x) {
-      case "name":
-        this.setState({
-          name: e.target.value
-        });
-        break;
-      case "item":
-        this.setState({
-          item: e.target.value
-        });
-        break;
-      default:
-        break;
-    }
-  };
-
-  monSelected = e => {
-    let mon = JSON.parse(e.target.dataset.pokemon);
-    this.getInfo(`https://pokeapi.co/api/v2/pokemon/${mon.name}`).then(data => {
-      this.setState({
-        found: data.name,
-        img: data.sprites.front_default,
-        types: data.types,
-        abilities: data.abilities,
-        selectedAbility: data.abilities[0],
-        showPokeSearch: "closed"
-      });
-      data.moves.forEach((mov) => {
-        this.setState({
-          moves: [...this.state.moves, mov]
-        })
-      })
-      console.log(this.state.moves[0].move)
-    });
-  };
-
-  itemSelected = e => {
-    let item = JSON.parse(e.target.dataset.pokemon);
-    this.getInfo(`https://pokeapi.co/api/v2/item/${item.name}`).then(data => {
-      this.setState({
-        foundItem: data.name,
-        showItemSearch: 'closed'
-      });
-    });
-
-  };
-
-  next = e => {
-    e.preventDefault();
-    this.setState({
-      showcase: []
-    });
-    this.getInfo(this.state.next).then(data => {
-      let pokemon = data.results;
-      console.log(data.previous)
-      this.setState({ next: data.next, previous: data.previous });
-      pokemon.forEach(mon => {
-        this.getInfo(mon.url).then(json => {
-          this.setState({
-            showcase: [
-              ...this.state.showcase,
-              { name: json.name, url: json.sprites.front_default }
-            ]
-          });
-        });
-      });
-    });
-  };
-
-  previous = e => {
-    e.preventDefault();
-    this.setState({
-      showcase: []
-    });
-    this.getInfo(this.state.previous).then(data => {
-      let pokemon = data.results;
-      this.setState({ next: data.next, previous: data.previous })
-      pokemon.forEach(mon => {
-        this.getInfo(mon.url).then(json => {
-          this.setState({
-            showcase: [
-              ...this.state.showcase,
-              { name: json.name, url: json.sprites.front_default }
-            ]
-          })
-        })
-      })
-    })
-  }
-
-  nextItem = e => {
-    e.preventDefault();
-    this.setState({
-      itemList: []
-    });
-    this.getInfo(this.state.nextItem).then(data => {
-      let items = data.results;
-      this.setState({ nextItem: data.next, previousItem: data.previous });
-      items.forEach(item => {
-        this.getInfo(item.url).then(json => {
-          this.setState({
-            itemList: [
-              ...this.state.itemList,
-              { name: json.name, url: json.sprites.default }
-            ]
-          });
-        });
-      });
-    });
-  };
-
-  previousItem = e => {
-    e.preventDefault();
-    this.setState({
-      itemList: []
-    });
-    this.getInfo(this.state.previousItem).then(data => {
-      let items = data.results;
-      this.setState({ nextItem: data.next, previousItem: data.previous });
-      items.forEach(item => {
-        this.getInfo(item.url).then(json => {
-          this.setState({
-            itemList: [
-              ...this.state.itemList,
-              { name: json.name, url: json.sprites.default }
-            ]
-          });
-        });
-      });
-    });
-  };
-
-  map(arr) {
-    if (arr !== []) {
-      return (
-        <div style={styles.preview}>
-          {arr.map((item, index) => {
-            return (
-              <PokePreview
-                key={index}
-                item={JSON.stringify(item)}
-                selected={item.url ? this.monSelected : this.itemSelected}
-                name={item.name}
-                url={item.url ? item.url : item.img}
-              />
-            );
-          })}
-        </div>
-      );
-    }
-  }
-
-  selectedAbility = e => {
-    e.preventDefault();
-    this.setState({
-      selectedAbility: e.target.value
-    })
-  }
-
-  render() {
-    return (
-      <div style={styles.container}>
-        <Modal
-          content={
-            <div style={styles.modalContent}>
-              <SearchBar
-                submit={this.onSubmitItem}
-                name="item"
-                onChange={this.onChange}
-                placeholder="Item"
-                errorField="closed"
-              />
-              {this.map(this.state.itemList)}
-              <GalleryButtons
-                next={this.nextItem}
-                previous={this.previousItem}
-              />
-            </div>
-          }
-          class={this.state.showItemSearch}
-        />
-
-        <Modal
-          content={
-            <div style={styles.modalContent}>
-              <SearchBar submit={this.onSubmitName} name="name" onChange={this.onChange} placeholder='Pokemon' errorField='closed' />
-              {this.map(this.state.showcase)}
-              <GalleryButtons next={this.next} previous={this.previous} />
-            </div>
-          }
-          class={this.state.showPokeSearch} />
-
-        <div style={styles.form}>
-          <SingleForm
-            modalOpen={function () {
-              this.setState({ showPokeSearch: "open" });
-            }.bind(this)}
-            submit={this.onSubmitName}
-            name="name"
-            label="Name"
+      />
+      <Modal
+        class={`modal-modify ` + modifyModal}
+        content={
+          <TempSelector
+            selectedMove={moveSelection}
+            pokemon={currentPokemon}
+            movePool={movePool}
+            submitTerm={submitTerm}
+            onChange={onChangeMove}
+            abilityChange={selectedAbility}
+            submit={submitMods}
+            selectedMoves={selectedMoves}
           />
-
-          <form>
-            <label htmlFor="ability">Ability</label>
-            <select onChange={this.selectedAbility} id="ability">
-              {this.state.abilities !== []
-                ? this.state.abilities.map((ability, index) => {
-                  return (
-                    <option key={index} value={ability.ability.name}>
-                      {ability.ability.name}
-                    </option>
-                  );
-                })
-                : null}
-            </select>
-          </form>
-
-          <SingleForm
-            modalOpen={function () {
-              this.setState({ showItemSearch: "open" });
-            }.bind(this)}
-            label="Item"
-            submit={this.onSubmitItem}
-            name="item"
-            val={this.state.foundItem}
+        }
+      ></Modal>
+      {console.log("current")}
+      {console.log(currentPokemon)}
+      <Modal
+        click={() => console.log("test")}
+        class={`edit-modal ` + showEditModal}
+        content={
+          <EditPokemon
+            pokemon={currentPokemon}
+            selectedMoves={currentPokemon ? currentPokemon.moves : null}
+            onChangeAbility={editAbility}
+            onChangeMoves={editMoves}
+            submit={submitEdit}
+            delete={deletePokemon}
           />
+        }
+      ></Modal>
 
-          <form>
-            <label htmlFor="moves">Moves</label>
-            <select onChange={this.selectedMove} data-order="1" className="moves">
-              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
-                return (
-                  <option key={index} value={move.move.name}>
-                    {move.move.name}
-                  </option>
-                )
-              }) : null}
-            </select>
+      <Modal
+        class={`submit-team-modal ${submitModal}`}
+        content={
+          <SubmitTeam
+            analyze={analyzeTeam}
+            edit={returnTo}
+            teamName={teamName}
+            team={team}
+          />
+        }
+      />
+      <h2>{teamName}</h2>
 
-            <select onChange={this.selectedMove} data-order="2" className="moves">
-              {this.state.moves !== [] ? this.state.moves.map((move, index) => {
-                return (
-                  <option key={index} value={move.move.name}>
-                    {move.move.name}
-                  </option>
-                )
-              }) : null}
-            </select>
-
-            <select onChange={this.selectedMove} data-order="3" className="moves">
-              {this.state.moves !== []
-                ? this.state.moves.map((move, index) => {
-                  return (
-                    <option key={index} value={move.move.name}>
-                      {move.move.name}
-                    </option>
-                  );
-                })
-                : null}
-            </select>
-
-            <select onChange={this.selectedMove} data-order="4" className="moves">
-              {this.state.moves !== []
-                ? this.state.moves.map((move, index) => {
-                  return (
-                    <option key={index} value={move.move.name}>
-                      {move.move.name}
-                    </option>
-                  );
-                })
-                : null}
-            </select>
-          </form>
-        </div>
-
-        <Panel
-          style={styles.panel}
-          name={this.state.found}
-          img={this.state.img}
-          types={this.state.types}
-          submit={this.onSubmitPokemon}
+      <div className="pokemon-container">
+        {console.log(team)}
+        <AddPokemon
+          submitTeam={submitTeam}
+          click={addPokemonClick}
+          count={count}
         />
+        {team && team.team !== []
+          ? team.team.map((mon, index) => {
+              return (
+                <PokeDisplay
+                  id={index}
+                  img={mon.img}
+                  edit={edit}
+                  pokemon={mon}
+                  key={index}
+                />
+              );
+            })
+          : null}
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Builder;
-
-const styles = {
-  container: {
-    display: "flex",
-    justifyContent: "space-between",
-    position: "relative"
-  },
-  panel: {
-    marginRight: "0px"
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column"
-  },
-  formModal: {
-    maxWidth: "50%"
-  },
-  modalContent: {
-    width: "50%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  preview: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    backgroundColor: "gray"
-  },
-};

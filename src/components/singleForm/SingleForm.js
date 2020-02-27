@@ -2,18 +2,19 @@ import React from "react";
 
 export const SingleForm = props => {
   return (
-    <form onSubmit={props.submit}>
+    <form className="singleForm" onSubmit={props.submit}>
       <label htmlFor={props.name}>{props.label}</label>
       <input
         onClick={props.modalOpen}
         name={props.name}
         type={props.type}
         defaultValue={props.val}
+        onChange={props.onChange}
+        placeholder={props.placeholder}
+        autoComplete="off"
       />
-    </form>
+      {props.button}
+    </form >
   );
 };
 
-// {function () {
-//     this.setState({ showPokeSearch: "open" });
-// }.bind(this)}

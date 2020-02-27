@@ -1,41 +1,46 @@
 .toolbar {
   background-color: $accent;
-}
+  height: 10%;
+  display: flex;
 
-.drawer-root h6 {
-  font-family: "Luckiest Guy", cursive;
-  font-size: 2.5em;
-}
-
-.drawer {
-  background-color: red;
-}
-
-.link {
-  text-decoration: none;
+  img {
+    width: 60px;
+  }
 }
 
 .link span {
   color: white;
-  font-size: 1.7em;
+  font-size: 1.6em;
   font-weight: 600;
   font-family: $lucky;
-  margin-left: 1rem;
+  display: block;
+  text-align: left;
+}
+
+.link:nth-of-type(1) {
+  margin-top: 1.5rem;
+}
+
+.link {
+  text-decoration: none;
+  margin-bottom: 1rem;
 }
 
 .icon {
   display: inline-flex;
-  min-width: 56px;
+  min-width: 40px;
   flex-shrink: 0;
 }
 
-.list-item-text {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin-top: 4px;
-  margin-bottom: 4px;
+.MuiListItem-root {
+  display: flex !important;
+  align-items: center !important;
+  align-content: center !important;
+  margin-left: 1.5rem !important;
 }
 
-.MuiListItem-root {
-  justify-content: center !important;
+@media (max-width: 600px) {
+  .MuiPaper-root.MuiDrawer-paper.makeStyles-drawerPaper-6 {
+    box-shadow: 0px 0px 5px 10px rgba(31, 29, 29, 0.4) !important;
+  }
 }

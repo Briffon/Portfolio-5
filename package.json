@@ -1,4 +1,5 @@
 {
+  "homepage": "http://briffon.github.io/Portfolio-5",
   "name": "my-react-app",
   "version": "0.1.0",
   "private": true,
@@ -9,13 +10,18 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "babel": "^6.23.0",
     "material-ui": "^0.20.2",
     "material-ui-icons": "^1.0.0-beta.36",
+    "mdbreact": "^4.25.2",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-autocomplete": "^1.8.1",
+    "react-autocomplete-input": "^1.0.12",
+    "react-autosuggest": "^9.4.3",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
+    "react-router-last-location": "^2.0.1",
     "react-scripts": "3.3.1",
     "sass": "^1.25.0"
   },
@@ -23,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
   }
 }
