@@ -69,7 +69,7 @@ const TypeBubble = props => {
       className="type-bubble-container"
       style={{ backgroundColor: backgroundColor(props.type) }}
     >
-      <p>{props.type}</p>
+      <p>{props.weak ? props.type + "X" + props.weak : props.type}</p>
     </div>
   );
 };

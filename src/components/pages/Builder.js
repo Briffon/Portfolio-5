@@ -11,7 +11,7 @@ import TempSelector from "../tempSelector/TempSelector";
 
 function Builder() {
   const [teamName, setTeamName] = useState("");
-  const [showInitModal, setInitModal] = useState("open");
+  const [showInitModal, setInitModal] = useState("closed");
   const [errorFields, setErrorFields] = useState([]);
   const [team, setTeam] = useState();
   const [count, setCount] = useState(team ? team.team.length : 0);

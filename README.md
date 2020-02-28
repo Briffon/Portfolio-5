@@ -2,7 +2,7 @@
 
 # By Britton Smith
 
-<img src="https://prnt.sc/r8ss27" 
+<img src="" 
 alt="Pokemon Advisor Home" width="240" height="180" border="10" />
 
 ## Basis

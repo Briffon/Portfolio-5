@@ -1,0 +1,57 @@
+.analyze-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.analyze-team-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .type-bubble-container {
+    margin: 5px !important;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    img {
+      border-radius: 80px;
+      padding: 0.8rem;
+      width: 140px;
+      background-color: rgba(53, 53, 53, 0.9);
+      box-shadow: -5px 5px 0px 0px rgba(128, 128, 128, 0.4);
+    }
+
+    p {
+      text-transform: capitalize;
+    }
+  }
+}
+
+.poke-name {
+  text-transform: capitalize;
+  margin: 1rem;
+}
+
+.analyze-poke-container {
+  margin: 2rem;
+}
+
+.analyze-weaknesses {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 425px) {
+  .analyze-team-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    div {
+    }
+  }
+}
