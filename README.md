@@ -2,6 +2,8 @@
 
 # By Britton Smith
 
+![alt text]https://prnt.sc/r8ss27
+
 ## Basis
 
 Web Application for making competitive Pokémon teams. The application will allow you to
