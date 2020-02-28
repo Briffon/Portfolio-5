@@ -16,8 +16,8 @@ class TempSelector extends Component {
         <div className="move-list">
           {this.props.selectedMoves
             ? this.props.selectedMoves.map((move, index) => {
-                return <p key={index}>{move.name}</p>;
-              })
+              return <p key={index}>{move.name}</p>;
+            })
             : null}
         </div>
         <div className="abil-container">
@@ -27,12 +27,12 @@ class TempSelector extends Component {
           <select name="abil" onChange={this.props.abilityChange}>
             {this.props.pokemon.abilities
               ? this.props.pokemon.abilities.map((abil, index) => {
-                  return (
-                    <option key={index} value={abil.ability.name}>
-                      {abil.ability.name}
-                    </option>
-                  );
-                })
+                return (
+                  <option key={index} value={abil.ability.name}>
+                    {abil.ability.name}
+                  </option>
+                );
+              })
               : null}
           </select>
         </div>
@@ -42,16 +42,17 @@ class TempSelector extends Component {
         <ul>
           {this.props.movePool
             ? this.props.movePool.map((move, index) => {
-                return (
-                  <li
-                    data-info={JSON.stringify(move)}
-                    onClick={this.props.selectedMove}
-                    key={index}
-                  >
-                    {move.move.name}
-                  </li>
-                );
-              })
+              return (
+                <li
+                  //className={}//make a conditional here for selected moves
+                  data-info={JSON.stringify(move)}
+                  onClick={this.props.selectedMove} //conditional here as well
+                  key={index}>
+                  {move.move.name}
+                </li>
+                //check for selected move
+              );
+            })
             : null}
         </ul>
         <button onClick={this.props.submit}>Submit</button>
