@@ -6,21 +6,20 @@ const AbilitySelector = props => {
       data-info={JSON.stringify(props.selectedAbility)}
       onChange={props.onChange}
     >
-      {props.selectedAbility ? (
+    {props.selectedAbility ? <option value={props.selectedAbility}>{props.selectedAbility.name}</option>:null}
+    {/* {props.selectedAbility ? console.log(props.selectedAbility.name) :null}
+      {props.selectedAbility ?  (
         <option
-          value={
-            props.selectedAbility ? props.selectedAbility.ability.name : null
-          }
+          value={props.selectedAbility.name}
         >
           {props.selectedAbility !== " "
             ? props.selectedAbility.ability.name
             : null}
         </option>
-      ) : null}
-
+      ) : null}*/}
       {props.abilities
         ? props.abilities.map((abil, index) => {
-            if (abil.ability.name !== props.selectedAbility.ability.name) {
+            if (abil.ability.name !== props.selectedAbility.name) {
               return (
                 <option key={index} value={abil.ability.name}>
                   {abil.ability.name}
@@ -28,7 +27,7 @@ const AbilitySelector = props => {
               );
             }
           })
-        : null}
+        : null} 
     </select>
   );
 };

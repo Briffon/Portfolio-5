@@ -4,7 +4,6 @@ class TempSelector extends Component {
   render(props) {
     return (
       <div className="move-search">
-        {console.log(this.props.pokemon)}
         <img
           src={
             this.props.pokemon.sprites

@@ -20,7 +20,7 @@ function Teams() {
   };
   return (
     <div className="team-page-container">
-      {console.log(teams)}
+    {teams.length === 0 ?<h2 className="empty">NO TEAMS </h2> :null}
       {teams && teams.teams !== []
         ? teams.map((team, index) => {
             return (
@@ -49,7 +49,7 @@ function Teams() {
               </div>
             );
           })
-        : console.log(teams)}
+        : <h2>NO TEAMS</h2>}
     </div>
   );
 }

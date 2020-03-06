@@ -326,7 +326,7 @@ function Analyze() {
                         ? Object.keys(mon.weaknesses).map((weak, index) => {
                             if (mon.weaknesses[weak] > 0) {
                               return (
-                                <p>
+                                <p key={index}>
                                   {weak}:{mon.weaknesses[weak]}
                                 </p>
                               );

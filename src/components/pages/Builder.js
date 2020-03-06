@@ -35,7 +35,6 @@ function Builder() {
     if (localStorage.getItem("tempTeam")) {
       let team = localStorage.getItem("tempTeam");
       let parsed = JSON.parse(team);
-      console.log(parsed);
       setTeam(parsed);
       setCount(parsed.team.length);
     }
@@ -86,13 +85,13 @@ function Builder() {
     setShowAddModal("closed");
     setModifyModal("open");
     setSelectedMoves([]);
+    console.log(`Ability ${ability}`)
   };
 
   const edit = e => {
     e.preventDefault();
     let id = e.target.parentElement.dataset.pokemon;
     let data = team.team[id];
-    console.log(data);
     setCurrentPokemon(data);
     setShowEditModal("open");
   };
@@ -105,6 +104,7 @@ function Builder() {
       url: `https://pokeapi.co/api/v2/ability/` + val
     };
     currentPokemon.ability = newAbil;
+    console.log(`Ability ${ability}`)
   };
 
   const editMoves = e => {
@@ -137,13 +137,9 @@ function Builder() {
   const deletePokemon = e => {
     e.preventDefault();
     let index = team.team.indexOf(currentPokemon); //get index of selected pokemon
-    console.log(index);
     let mon = team.team.slice(index, 1); // take out the selected
-    console.log(mon);
     let tempTeam = team.team.filter(poke => poke !== mon[0]);
-    console.log(tempTeam);
     tempTeam = { name: teamName, team: [...tempTeam] };
-    console.log(tempTeam);
     localStorage.setItem("tempTeam", JSON.stringify(tempTeam));
     setTeam(tempTeam);
     setCount(tempTeam.team.length);
@@ -187,11 +183,9 @@ function Builder() {
           localStorage.removeItem("tempTeam");
         }
       } else {
-        console.log("dup");
         localStorage.removeItem("tempTeam");
       }
     } else {
-      console.log("test");
       let tempTemp = { teams: [{ name: teamName, team: team }] };
       localStorage.setItem("teams", JSON.stringify(tempTemp));
       setTeam([]);
@@ -202,18 +196,27 @@ function Builder() {
 
   const selectedAbility = e => {
     e.preventDefault();
-    setAbility(e.target.value);
+    let val = e.target.value;
+    if(val!==''){
+     let newAbil = {
+      name: val,
+      url: `https://pokeapi.co/api/v2/ability/` + val
+    };
+    console.log('selected')
+    console.log(newAbil)
+
+    setAbility(newAbil);
+    }
+  
   };
 
   const moveSelection = e => {
     e.preventDefault();
     let parsed = JSON.parse(e.target.dataset.info);
     let valid = true;
-    console.log(parsed);
     if (!(selectedMoves.length >= 4)) {
       selectedMoves.forEach(move => {
         if (move.name === parsed.move.name) {
-          console.log(move, parsed.move.name);
           valid = false;
         }
       });
@@ -227,7 +230,6 @@ function Builder() {
         //display error
       }
     }
-    console.log(selectedMoves);
   };
 
   const submitMods = e => {
@@ -237,9 +239,9 @@ function Builder() {
       //add pokemon to team
       setModifyModal("closed");
 
-      console.log(team);
       if (team !== undefined) {
         if (!(team.team.length >= 6)) {
+          console.log(`Ability ${ability}`)
           let pokemon = {
             pokemon: currentPokemon,
             ability: ability,
@@ -248,7 +250,6 @@ function Builder() {
             img: currentPokemonImg,
             types: currentTypes
           };
-          console.log(team);
           setTeam({ name: teamName, team: [...team.team, pokemon] });
 
           //save team incase user adds a pokemon
@@ -261,6 +262,7 @@ function Builder() {
           //when a team is submitted clear the storage
         }
       } else {
+        console.log(`Ability ${ability}`)
         let pokemon = {
           pokemon: currentPokemon,
           ability: ability,
@@ -269,7 +271,6 @@ function Builder() {
           img: currentPokemonImg,
           types: currentTypes
         };
-        console.log(team);
         setTeam({ name: teamName, team: [pokemon] });
         //set local storage = team pokemon added
         localStorage.setItem(
@@ -300,7 +301,6 @@ function Builder() {
         .then(json => {
           if (!(selectedMoves.length >= 4)) {
             selectedMoves.forEach(move => {
-              console.log(move);
             });
             setSelectedMoves([
               ...selectedMoves,
@@ -309,7 +309,6 @@ function Builder() {
           }
         });
     } catch (e) {
-      console.log(e);
       //display error
     }
   };
@@ -357,8 +356,6 @@ function Builder() {
           />
         }
       ></Modal>
-      {console.log("current")}
-      {console.log(currentPokemon)}
       <Modal
         click={() => console.log("test")}
         class={`edit-modal ` + showEditModal}
@@ -388,7 +385,6 @@ function Builder() {
       <h2>{teamName}</h2>
 
       <div className="pokemon-container">
-        {console.log(team)}
         <AddPokemon
           submitTeam={submitTeam}
           click={addPokemonClick}
