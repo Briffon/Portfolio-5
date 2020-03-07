@@ -10,8 +10,8 @@ import SubmitTeam from "../submitTeam/SubmitTeam";
 import TempSelector from "../tempSelector/TempSelector";
 
 function Builder() {
-  const [teamName, setTeamName] = useState("Test1");
-  const [showInitModal, setInitModal] = useState("closed");
+  const [teamName, setTeamName] = useState("");
+  const [showInitModal, setInitModal] = useState("open");
   const [errorFields, setErrorFields] = useState([]);
   const [team, setTeam] = useState();
   const [count, setCount] = useState(team ? team.team.length : 0);
@@ -37,6 +37,8 @@ function Builder() {
       let parsed = JSON.parse(team);
       setTeam(parsed);
       setCount(parsed.team.length);
+      setTeamName(parsed.name);
+      setInitModal("closed");
     }
   }, []);
 
@@ -319,7 +321,7 @@ function Builder() {
   return (
     <div className={`builder-container`}>
       <Modal
-      click={() => console.log("test")}
+        click={() => console.log("test")}
         class={`modal-dex ` + showAddModal}
         content={
           <div>
