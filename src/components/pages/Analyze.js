@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import TypeBubble from "../typeBubble/TypeBubble";
 
 function Analyze() {
   const [teams, setTeams] = useState([]);
@@ -314,22 +315,25 @@ function Analyze() {
       {teams ? (
         teams.map((team, index) => {
           return (
-            <div key={index}>
+            <div className="analyze-top" key={index}>
               <h2>{team.name}</h2>
               {team.team.map((mon, index) => {
                 return (
-                  <div key={index}>
+                  <div className="analyze-content" key={index}>
                     <img src={mon.img} alt={mon.pokemon.name} />
                     <p>{mon.pokemon.name}</p>
                     {monWeaknesses(mon)}
-                    <div>
+                    <div className="analyze-poke-container">
                       {mon.weaknesses
                         ? Object.keys(mon.weaknesses).map((weak, index) => {
                             if (mon.weaknesses[weak] > 0) {
                               return (
-                                <p key={index}>
-                                  {weak}:{mon.weaknesses[weak]}
-                                </p>
+                               <div className="analyze-weaknesses">
+                                    <TypeBubble
+                                      weak={mon.weaknesses[weak]}
+                                      type={weak}
+                                    />
+                                  </div>
                               );
                             }
                           })

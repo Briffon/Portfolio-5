@@ -125,7 +125,7 @@ function Header(props) {
       </div>
       <Divider />
       <List>
-        {["Home", "Builder", "Teams", "Resources", "About"].map(
+        {["Home", "Builder", "Teams", "Resources"].map(
           (text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{links(text, index)}</ListItemIcon>
