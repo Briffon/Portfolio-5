@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-
+import { NavLink } from "react-router-dom";
 function Teams() {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
-    if (localStorage.getItem("teams")) {
+    if (localStorage.getItem("teams")&& JSON.parse(localStorage.getItem("teams")).length!==0) {
       let teams = localStorage.getItem("teams");
       let parsed = JSON.parse(teams);
       console.log(parsed);
@@ -12,11 +12,18 @@ function Teams() {
   }, []);
 
   const editTeam = e => {
-    e.preventDefault();
+    let index = e.target.dataset.index;
+    let team = teams[index];
+    localStorage.setItem('tempTeam',JSON.stringify(team.team))
   };
 
   const deleteTeam = e => {
     e.preventDefault();
+    let index = e.target.dataset.index;
+    let tempTeam = teams;
+    tempTeam.splice(index,1);
+    setTeams(tempTeam);
+    localStorage.setItem('teams',JSON.stringify(tempTeam));
   };
   return (
     <div className="team-page-container">
@@ -42,8 +49,12 @@ function Teams() {
                     })}
                   </div>
                   <div className="team-buttons">
-                    <button onClick={editTeam}>Edit</button>
-                    <button onClick={deleteTeam}>Delete</button>
+                    <NavLink data-index={index} to="/Builder" onClick={editTeam} >
+                      <button data-index={index}>Edit</button>
+                    </NavLink>
+                    <NavLink data-index={index} to="/Teams" onClick={deleteTeam} >
+                      <button data-index={index}>Delete</button>
+                    </NavLink>
                   </div>
                 </div>
               </div>

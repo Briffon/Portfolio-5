@@ -162,11 +162,13 @@ function Builder() {
 
   const analyzeTeam = e => {
     let teamString = JSON.stringify(team);
+    console.log(team)
     localStorage.setItem("team", teamString);
-
-    if (localStorage.getItem("teams")) {
+    console.log(JSON.parse(localStorage.getItem("teams")).length)
+    if (localStorage.getItem("teams") && JSON.parse(localStorage.getItem("teams")).length!== 0) {
       let temp = JSON.parse(localStorage.getItem("teams"));
       let valid = true;
+      console.log(temp)
       temp.teams.forEach(oldTeam => {
         if (JSON.stringify(oldTeam.team) === JSON.stringify(team)) {
           valid = false;

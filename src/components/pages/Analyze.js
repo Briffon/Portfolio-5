@@ -310,6 +310,7 @@ function Analyze() {
 
   return (
     <div className="analyze-container">
+    {teams ? console.log(teams):null}
       {teams ? (
         teams.map((team, index) => {
           return (
