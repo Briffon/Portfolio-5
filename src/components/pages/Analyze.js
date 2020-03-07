@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TypeBubble from "../typeBubble/TypeBubble";
+
 function Analyze() {
   const [teams, setTeams] = useState([]);
 
@@ -304,55 +305,43 @@ function Analyze() {
             mon.weaknesses.dark = mon.weaknesses.dark - 2;
           }
           break;
-        case "bug":
-          mon.weaknesses.fire = mon.weaknesses.fire + 2;
-          mon.weaknesses.flying = mon.weaknesses.flying + 2;
-          mon.weaknesses.rock = mon.weaknesses.rock + 2;
-          if (mon.weaknesses.ghost > -2) {
-            mon.weaknesses.ghost = mon.weaknesses.ghost - 2;
-          }
-          if (mon.weaknesses.fighting > -2) {
-            mon.weaknesses.fighting = mon.weaknesses.fighting - 2;
-          }
-          break;
       }
     });
   }
 
   return (
     <div className="analyze-container">
+    {teams ? console.log(teams):null}
       {teams ? (
         teams.map((team, index) => {
           return (
-            <div className="analyze-content" key={index}>
+            <div className="analyze-top" key={index}>
               <h2>{team.name}</h2>
-              <div className="analyze-team-container">
-                {team.team.map((mon, index) => {
-                  return (
-                    <div className="analyze-poke-container" key={index}>
-                      <img src={mon.img} alt={mon.pokemon.name} />
-                      <p className="poke-name">{mon.pokemon.name}</p>
-                      {monWeaknesses(mon)}
-                      <div>
-                        {mon.weaknesses
-                          ? Object.keys(mon.weaknesses).map((weak, index) => {
-                              if (mon.weaknesses[weak] > 0) {
-                                return (
-                                  <div className="analyze-weaknesses">
+              {team.team.map((mon, index) => {
+                return (
+                  <div className="analyze-content" key={index}>
+                    <img src={mon.img} alt={mon.pokemon.name} />
+                    <p>{mon.pokemon.name}</p>
+                    {monWeaknesses(mon)}
+                    <div className="analyze-poke-container">
+                      {mon.weaknesses
+                        ? Object.keys(mon.weaknesses).map((weak, index) => {
+                            if (mon.weaknesses[weak] > 0) {
+                              return (
+                               <div className="analyze-weaknesses">
                                     <TypeBubble
                                       weak={mon.weaknesses[weak]}
                                       type={weak}
                                     />
                                   </div>
-                                );
-                              }
-                            })
-                          : null}
-                      </div>
+                              );
+                            }
+                          })
+                        : null}
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
           );
         })

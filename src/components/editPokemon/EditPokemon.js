@@ -4,9 +4,7 @@ import AbilitySelector from "../abilitySelector/AbilitySelector";
 const EditPokemon = props => {
   return (
     <div className="edit-container">
-      {console.log(props.pokemon)}
       <img src={props.pokemon ? props.pokemon.img : null} alt="" />
-      {props.pokemon.pokemon ? console.log(props.pokemon.pokemon.moves) : null}
 
       <form onSubmit={props.submit}>
         <AbilitySelector

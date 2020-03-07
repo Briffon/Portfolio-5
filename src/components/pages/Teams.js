@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-
 function Teams() {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
-    if (localStorage.getItem("teams")) {
+    if (localStorage.getItem("teams")&& JSON.parse(localStorage.getItem("teams")).length!==0) {
       let teams = localStorage.getItem("teams");
       let parsed = JSON.parse(teams);
       console.log(parsed);
@@ -13,95 +12,56 @@ function Teams() {
   }, []);
 
   const editTeam = e => {
-    e.preventDefault();
-    let team = e.target.dataset.team;
-
-    localStorage.setItem("tempTeam", team);
+    let index = e.target.dataset.index;
+    let team = teams[index];
+    localStorage.setItem('tempTeam',JSON.stringify(team.team));
   };
 
   const deleteTeam = e => {
     e.preventDefault();
-
-    let team = e.target.dataset.team;
-    let teams = localStorage.getItem("teams");
-    let id = e.target.dataset.index;
-    if (teams.includes(team)) {
-      {
-        console.log(id);
-        // let parsedTeam = JSON.parse(team);
-        let parsedTeams = JSON.parse(teams);
-        parsedTeams.teams.splice(id, 1);
-        console.log(parsedTeams);
-        localStorage.setItem("teams", JSON.stringify(parsedTeams));
-
-        // console.log(parsedTeams);
-        // let id = parsedTeams.teams.indexOf(parsedTeam);
-        // console.log(id);
-      }
-    }
+    let index = e.target.dataset.index;
+    let tempTeam = teams;
+    tempTeam.splice(index,1);
+    setTeams(tempTeam);
+    localStorage.setItem('teams',JSON.stringify(tempTeam));
+     window.location.reload(false);
   };
   return (
     <div className="team-page-container">
-      {console.log(teams)}
-      {teams && teams.teams !== [] ? (
-        teams.map((team, index) => {
-          return (
-            <div
-              className="team-container"
-              key={index}
-              data-pokemon={JSON.stringify(team)}
-            >
-              <h2>{team.team.name}</h2>
-              <div className="oof">
-                <div className="team-display">
-                  {team.team.team.map((mon, index) => {
-                    console.log(mon);
-                    return (
-                      <div className="team-poke-container" key={index}>
-                        <img src={mon.img} alt={mon.pokemon.name} />
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="team-buttons">
-                  {/* <button
-                    data-index={index}
-                    data-team={JSON.stringify(team)}
-                    onClick={editTeam}
-                  >
-                    Edit
-                  </button> */}
-                  <NavLink
-                    to="/Builder"
-                    data-index={index}
-                    data-team={JSON.stringify(team)}
-                    onClick={editTeam}
-                  >
-                    Edit
-                  </NavLink>
-                  {/* <button
-                    data-index={index}
-                    data-team={JSON.stringify(team)}
-                    onClick={deleteTeam}
-                  >
-                    Delete
-                  </button> */}
-                  <NavLink
-                    data-index={index}
-                    data-team={JSON.stringify(team)}
-                    to="/Teams"
-                    onClick={deleteTeam}
-                  >
-                    Delete
-                  </NavLink>
+    {teams.length === 0 ?<h2 className="empty">NO TEAMS </h2> :null}
+      {teams && teams.teams !== []
+        ? teams.map((team, index) => {
+            return (
+              <div
+                className="team-container"
+                key={index}
+                data-pokemon={JSON.stringify(team)}
+              >
+                <h2>{team.team.name}</h2>
+                <div className="oof">
+                  <div className="team-display">
+                    {team.team.team.map((mon, index) => {
+                      console.log(mon);
+                      return (
+                        <div className="team-poke-container" key={index}>
+                          <img src={mon.img} alt={mon.pokemon.name} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="team-buttons">
+                    <NavLink data-index={index} to="/Builder" onClick={editTeam} >
+                      <button data-index={index}>Edit</button>
+                    </NavLink>
+                    <NavLink data-index={index} to="/Teams" onClick={deleteTeam} >
+                      <button data-index={index}>Delete</button>
+                    </NavLink>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })
-      ) : (
-        <h2>No Teams</h2>
-      )}
+            );
+          })
+        : <h2>NO TEAMS</h2>}
     </div>
   );
 }
