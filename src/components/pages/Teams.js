@@ -14,7 +14,7 @@ function Teams() {
   const editTeam = e => {
     let index = e.target.dataset.index;
     let team = teams[index];
-    localStorage.setItem('tempTeam',JSON.stringify(team.team))
+    localStorage.setItem('tempTeam',JSON.stringify(team.team));
   };
 
   const deleteTeam = e => {
@@ -24,6 +24,7 @@ function Teams() {
     tempTeam.splice(index,1);
     setTeams(tempTeam);
     localStorage.setItem('teams',JSON.stringify(tempTeam));
+     window.location.reload(false);
   };
   return (
     <div className="team-page-container">
